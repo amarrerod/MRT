@@ -11,4 +11,5 @@ class Metaheuristic {
  private:
   string name;
   Solutions solutions;
+  Map map;
 };

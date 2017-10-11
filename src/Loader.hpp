@@ -7,13 +7,14 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
+#include "Tourist.hpp"
+#include "Location.hpp"
 
 using namespace std;
 class Loader {
-
  public:
-  int loadDistances(string &);
-  int loadTourist(string &);
-  int loadCategories(string &);
-  int loadLocations(string &);
+  int loadDistances(string &, vector<int> &distances);
+  int loadTourist(string &, Tourist &tourist);
+  int loadLocations(string &, vector<Location> &locations);
 };

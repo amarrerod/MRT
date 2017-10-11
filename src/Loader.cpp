@@ -4,7 +4,7 @@
 
 #include "Loader.hpp"
 
-int Loader::loadDistances(string &path) {
+int Loader::loadDistances(string &path, vector<int>& distances) {
   ifstream dataFile(path, ifstream::in);
   if(dataFile.good()){
 
@@ -14,14 +14,10 @@ int Loader::loadDistances(string &path) {
   }
 }
 
-int Loader::loadCategories(string &) {
-  // TODO
-}
-
 int Loader::loadLocations(string &) {
   // TODO
 }
 
-int Loader::loadTourist(string &) {
+int Loader::loadTourist(string &, Tourist& tourist) {
   // TODO
 }
