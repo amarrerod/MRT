@@ -6,15 +6,17 @@ using namespace std;
 class Tourist {
  public:
   Tourist();
-  Tourist(int& days, int& preferences, int& hours, int& circular);
+  Tourist(int& startPoint, int& days, int& preferences, int& hours, int& circular);
   virtual ~Loader();
  private:
-  int days, preferences, hours, circular;
+  int start, days, preferences, hours, circular;
  public:
+  void setStartPoint(const int&);
   void setDays(const int&);
   void setPreferences(const int &);
   void setHours(const int&);
   void setCircular(const int &);
+  int getStartPoint();
   int getDays();
   int getPreferences();
   int getHours();

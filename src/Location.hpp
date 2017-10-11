@@ -26,4 +26,14 @@ class Location {
   const int getDuration();
  public:
   string &toString();
+ public:
+  static const int HOTEL;
+  static const int BEACH;
+  static const int ZOO;
+  static const int SIGHTSEEING;
+  static const int HIKING;
+  static const int AQUATIC;
+  static const int ENTERTAINMENT;
+  static const int STROLL;
+  static const int MUSEUM;
 };

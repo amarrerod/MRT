@@ -25,6 +25,6 @@ class Solutions {
   void setPointInRoute(const int route, const int point);
  private:
   int computeGetDistance(const int start, const int end, const int size);
-  
+
 };
 #endif //MRT_SOLUTIONS_HPP
