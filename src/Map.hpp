@@ -5,6 +5,7 @@
 #ifndef MRT_MAP_HPP
 #define MRT_MAP_HPP
 #include <vector>
+#include <string>
 #include "Location.hpp"
 
 class Map {
@@ -23,5 +24,7 @@ class Map {
   int getDistanceFromTo(const int start, const int end);
  private:
   int computeGetDistance(const int start, const int end, const int size);
+ public:
+  string &toString();
 };
 #endif //MRT_MAP_HPP

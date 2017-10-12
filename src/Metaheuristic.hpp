@@ -12,4 +12,8 @@ class Metaheuristic {
   string name;
   vector<Route> solutions;
   Map map;
+ public:
+  virtual void run() = 0;
+  virtual void initParams() = 0;
+  virtual string& toString() = 0;
 };

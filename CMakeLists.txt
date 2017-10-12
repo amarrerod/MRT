@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
 project(MRT)
 set(CMAKE_CXX_STANDARD 11)
-set(SOURCE_FILES src/main.cpp src/Loader.cpp src/Route.cpp src/Route.hpp src/Map.cpp src/Map.hpp)
+set(SOURCE_FILES src/main.cpp src/Route.cpp src/Route.hpp src/Map.cpp src/Map.hpp src/Tourist.cpp src/Tourist.hpp)
 add_executable(MRT ${SOURCE_FILES})
