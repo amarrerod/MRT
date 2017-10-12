@@ -1,6 +1,6 @@
 
 #include <string>
-#include "Solutions.hpp"
+#include "Route.hpp"
 
 using namespace std;
 class Metaheuristic {
@@ -10,6 +10,6 @@ class Metaheuristic {
   virtual ~Metaheuristic();
  private:
   string name;
-  Solutions solutions;
+  vector<Route> solutions;
   Map map;
 };
