@@ -29,7 +29,7 @@ string Tourist::toString() {
 	str += "\t Dias: " + to_string(days) + "\n";
 	str += "\t Preferencias: ";
 	str += (preferences == DISTANCE) ? "distancia\n" : "puntuacion\n";
-	str += "\t Tiempo de ruta: " + to_string((time / 60)) + "\n";
+	str += "\t Tiempo de ruta: " + to_string((time / 60)) + "horas \n";
 	str += "\t Recorrido: ";
 	str += (circular == CIRCULAR) ? "circular\n" : "lineal\n";
 	return str;

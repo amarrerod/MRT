@@ -10,21 +10,22 @@
 
 class Map {
  public:
-  Map();
-  Map(const int &num, vector<Location> &locations);
-  virtual ~Map();
+	Map();
+	Map(const int num, vector<Location>& locations);
+	Map(const int num, vector<Location>& locations, vector<int> distances);
+	virtual ~Map();
  private:
-  int numberOfLocations;
-  vector<Location> locations;
-  vector<int> distances;
+	int numberOfLocations;
+	vector<Location> locations;
+	vector<int> distances;
  public:
-  void setLocations(vector<Location> &locations);
-  vector<vector<int>> &getDistances();
-  vector<Location> &getLocations();
-  int getDistanceFromTo(const int start, const int end);
+	void setLocations(vector<Location>& locations);
+	vector<vector<int>>& getDistances();
+	vector<Location>& getLocations();
+	int getDistanceFromTo(const int start, const int end);
  private:
-  int computeGetDistance(const int start, const int end, const int size);
+	int computeGetDistance(const int start, const int end, const int size);
  public:
-  string &toString();
+	string& toString();
 };
 #endif //MRT_MAP_HPP

@@ -11,10 +11,13 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <algorithm>
 #include "Tourist.hpp"
 #include "Location.hpp"
 
+
 using namespace std;
+
 const int TOURIST_ARGS = 5;
 const char DELIMITER = ',';
 
@@ -23,13 +26,7 @@ vector<int> loadDistances(string& str) {
 	vector<int> distances;
 	if (inputFile.good()) {
 		int value;
-#ifdef DEBUG
-		cout << "Matrix: " << endl;
-#endif
 		while (inputFile >> value) {
-#ifdef DEBUG
-			cout << value;
-#endif
 			distances.push_back(value);
 		}
 		return distances;
@@ -66,14 +63,25 @@ vector<Location> loadLocations(string& str) {
 	ifstream inputFile(str);
 	if (inputFile) {
 		string line;
-		inputFile >> line; // Nos saltamos la primera linea de comentarios
+		vector<Location> locations;
+		getline(inputFile, line); // Nos saltamos la primera linea de comentarios
 		while (inputFile >> line) {
 			istringstream iss(line);
 			string token;
+			vector<string> lineInfo;
 			while (getline(iss, token, DELIMITER)) {
-				cout << token << endl;
+				lineInfo.push_back(token);
 			}
+			replace(lineInfo[1].begin(), lineInfo[1].end(), '_', ' ');
+#ifdef DEBUG
+			for (int i = 0; i < lineInfo.size(); i++) {
+				cout << "Vector[" << i << "]: " << lineInfo[i] << endl;
+			}
+#endif
+			Location auxLocation(stoi(lineInfo[0]), lineInfo[1], stoi(lineInfo[2]), stod(lineInfo[3]), stoi(lineInfo[4]));
+			locations.push_back(auxLocation);
 		}
+		return locations;
 	} else {
 		cerr << "Error trying to open file: " << str;
 		exit(-1);

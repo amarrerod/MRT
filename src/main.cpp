@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include "Loader.hpp"
+#include "Map.hpp"
 
 using namespace std;
 const int NUM_PARAMS = 4;
@@ -19,18 +20,18 @@ int main(int argc, char** argv) {
 		cerr << "Usage: ./MRT tourist.conf location.conf distances.conf" << endl;
 		exit(-1);
 	} else {
-		string tourist(argv[1]);
+		string touristStr(argv[1]);
 		string locations(argv[2]);
 		string distances(argv[3]);
 #ifdef DEBUG
 		cout << "Params " << endl;
-		cout << "Tourist: " << tourist << endl;
+		cout << "Tourist: " << touristStr << endl;
 		cout << "Locations: " << locations << endl;
 		cout << "Distances: " << distances << endl;
 #endif
-		//vector<int> distanceMatrix = loadDistances(distances);
-		//vector<Location> locationsVector = loadLocations(locations);
-		Tourist touristObject = loadTourist(tourist);
-		cout << touristObject.toString();
+		vector<int> distanceMatrix = loadDistances(distances);
+		vector<Location> locationsVector = loadLocations(locations);
+		Tourist tourist = loadTourist(touristStr);
+		Map map(distanceMatrix.size(), locationsVector, distanceMatrix);
 	}
 }
