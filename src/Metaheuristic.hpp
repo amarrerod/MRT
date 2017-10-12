@@ -1,6 +1,7 @@
 
 #include <string>
 #include "Route.hpp"
+#include "Map.hpp"
 
 using namespace std;
 class Metaheuristic {
@@ -16,4 +17,6 @@ class Metaheuristic {
   virtual void run() = 0;
   virtual void initParams() = 0;
   virtual string& toString() = 0;
+ private:
+  void printResults();
 };
