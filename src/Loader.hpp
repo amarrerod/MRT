@@ -16,13 +16,20 @@
 
 using namespace std;
 const int TOURIST_ARGS = 5;
+const char DELIMITER = ',';
 
 vector<int> loadDistances(string &str) {
   ifstream inputFile(str);
   vector<int> distances;
-  if (inputFile) {
+  if (inputFile.good()) {
     int value;
+#ifdef DEBUG
+    cout << "Matrix: " << endl;
+#endif
     while (inputFile >> value) {
+#ifdef DEBUG
+      cout << value;
+#endif
       distances.push_back(value);
     }
     return distances;
@@ -41,7 +48,7 @@ Tourist loadTourist(string &str) {
     int i = 0;
     vector<int> touristArgs;
     while (iss.good() && i < TOURIST_ARGS) {
-      iss >>  touristArgs[i];
+      iss >> touristArgs[i];
       ++i;
     }
     Tourist tourist(touristArgs[0], touristArgs[1], touristArgs[2], touristArgs[3], touristArgs[4]);
@@ -53,7 +60,21 @@ Tourist loadTourist(string &str) {
 }
 
 vector<Location> loadLocations(string &str) {
-
+  ifstream inputFile(str);
+  if (inputFile) {
+    string line;
+    inputFile >> line; // Nos saltamos la primera linea de comentarios
+    while (inputFile >> line) {
+      istringstream iss(line);
+      string token;
+      while (getline(iss, token, DELIMITER)) {
+        cout << token << endl;
+      }
+    }
+  } else {
+    cerr << "Error trying to open file: " << str;
+    exit(-1);
+  }
 }
 
 #endif // MRT_LOADER_HPP
