@@ -30,6 +30,7 @@ int main(int argc, char** argv) {
 #endif
 		//vector<int> distanceMatrix = loadDistances(distances);
 		//vector<Location> locationsVector = loadLocations(locations);
-		loadTourist(tourist);
+		Tourist touristObject = loadTourist(tourist);
+		cout << touristObject.toString();
 	}
 }
