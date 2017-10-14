@@ -1,8 +1,8 @@
 
 #include <iostream>
 #include <vector>
-#include "Loader.hpp"
-#include "Map.hpp"
+#include "Handlers/Loader.hpp"
+#include "Basis/Map.hpp"
 #include "Algorithms/SimulatedAnnealing.hpp"
 
 using namespace std;

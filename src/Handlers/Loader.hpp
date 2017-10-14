@@ -12,8 +12,8 @@
 #include <vector>
 #include <sstream>
 #include <algorithm>
-#include "Tourist.hpp"
-#include "Location.hpp"
+#include "../Basis/Tourist.hpp"
+#include "../Basis/Location.hpp"
 
 
 using namespace std;

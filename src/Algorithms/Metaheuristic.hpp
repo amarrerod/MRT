@@ -1,7 +1,7 @@
 
 #include <string>
-#include "../Route.hpp"
-#include "../Map.hpp"
+#include "../Basis/Route.hpp"
+#include "../Basis/Map.hpp"
 
 using namespace std;
 class Metaheuristic {
