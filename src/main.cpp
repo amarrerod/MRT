@@ -3,6 +3,7 @@
 #include <vector>
 #include "Loader.hpp"
 #include "Map.hpp"
+#include "Algorithms/SimulatedAnnealing.hpp"
 
 using namespace std;
 const int NUM_PARAMS = 4;
@@ -33,5 +34,7 @@ int main(int argc, char **argv) {
     vector<Location> locationsVector = loadLocations(locations);
     Tourist tourist = loadTourist(touristStr);
     Map map(distanceMatrix.size(), locationsVector, distanceMatrix);
+    SimulatedAnnealing simulatedAnnealing;
+    simulatedAnnealing.printResults();
   }
 }
