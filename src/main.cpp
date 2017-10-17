@@ -32,8 +32,8 @@ int main(int argc, char **argv) {
 #endif
     vector<int> distanceMatrix = loadDistances(distances);
     vector<Location> locationsVector = loadLocations(locations);
-    Tourist tourist = loadTourist(touristStr);
-    Map map(distanceMatrix.size(), locationsVector, distanceMatrix);
+    loadTourist(touristStr);
+    Map::setParams(distanceMatrix.size(), locationsVector, distanceMatrix);
     SimulatedAnnealing simulatedAnnealing;
     simulatedAnnealing.printResults();
   }

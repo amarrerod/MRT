@@ -4,21 +4,33 @@
 
 #include "Map.hpp"
 
-Map::Map():
-	numberOfLocations(-1) {
+int Map::numberOfLocations = 0;
+vector<Location> Map::locations;
+vector<int> Map::distances;
+
+void Map::setParams(const int num, vector<Location> &locationsAux, vector<int> &distancesAux) {
+  numberOfLocations = num;
+  locations = locationsAux;
+  distances = distancesAux;
 }
 
-Map::~Map() {
+int Map::getNumberOfLocations() {
+  return numberOfLocations;
 }
 
-Map::Map(const int num, vector<Location>& locations) {
-	numberOfLocations = num;
-	this->locations = locations;
+Location Map::getLocation(const int i) {
+  return locations[i];
 }
 
+void Map::setLocations(vector<Location> &locationsaux) {
+  locations = locationsaux;
+}
 
-Map::Map(const int num, vector<Location>& locations, vector<int> distances) {
-	numberOfLocations = num;
-	this->locations = locations;
-	this->distances = distances;
+int Map::getDistanceFromTo(const int start, const int end) {
+  return computeGetDistance(start, end, numberOfLocations);
+}
+
+int Map::computeGetDistance(const int start, const int end, const int size) {
+  // TODO CALCULAR LA DISTANCIA
+  return -1;
 }

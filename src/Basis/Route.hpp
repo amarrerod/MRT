@@ -6,6 +6,7 @@
 #define MRT_SOLUTIONS_HPP
 #include <vector>
 #include <string>
+
 using namespace std;
 class Route {
  public:
@@ -15,12 +16,17 @@ class Route {
  private:
   vector<int> route;
   double rate;
+  int duration;
+  int locationsInRoute;
  public:
   vector<int> getRoute();
   int getLocationInRoute(const int point);
+  int getNumberOfLocations();
   double getRate();
+  int getDuration();
   void setPointInRoute(const int point);
   void setRate(const double r);
+  void setDuration(const int);
  public:
   string toString();
 };

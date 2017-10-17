@@ -15,7 +15,17 @@ class Metaheuristic {
   string toString();
   virtual void printResults();
  private:
+  void generateRandomSolution();
+  void restartChecks(); // Tras completar una ruta reiniciamos los vectores auxiliares
+  void evaluateRoute(Route& route);
+ private:
   string name;
   vector<Route> solutions;
-  Map map;
+ private:
+  // Vectores para almacenar los ID de las localizaciones comprobadas
+  vector<int> checked;
+  vector<int> unchecked;
+
+ private:
+  static const int NOT_VALID;
 };

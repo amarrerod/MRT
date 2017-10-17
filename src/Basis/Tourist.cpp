@@ -6,31 +6,30 @@ const int Tourist::LINEAL = 1;
 const int Tourist::DISTANCE = 0;
 const int Tourist::RATE = 1;
 
-Tourist::Tourist() :
-	start(0),
-	days(0),
-	preferences(0),
-	time(0),
-	circular(0) {}
+int Tourist::start = -1;
+int Tourist::days = -1;
+int Tourist::preferences = -1;
+int Tourist::time = -1;
+int Tourist::circular = -1;
 
 Tourist::~Tourist() {}
 
-Tourist::Tourist(int& startPoint, int& days, int& preferences, int& time, int& circular) {
-	start = startPoint;
-	this->days = days;
-	this->preferences = preferences;
-	this->time = time;
-	this->circular = circular;
+void Tourist::setParams(const int startPoint, const int numDays, const int pref, const int duration, const int cir) {
+  start = startPoint;
+  days = numDays;
+  preferences = pref;
+  time = duration;
+  circular = cir;
 }
 
 string Tourist::toString() {
-	string str = "Turista \n";
-	str += "\t Punto de inicio: " + to_string(start) + "\n";
-	str += "\t Dias: " + to_string(days) + "\n";
-	str += "\t Preferencias: ";
-	str += (preferences == DISTANCE) ? "distancia\n" : "puntuacion\n";
-	str += "\t Tiempo de ruta: " + to_string((time / 60)) + " horas \n";
-	str += "\t Recorrido: ";
-	str += (circular == CIRCULAR) ? "circular\n" : "lineal\n";
-	return str;
+  string str = "Turista \n";
+  str += "\t Punto de inicio: " + to_string(start) + "\n";
+  str += "\t Dias: " + to_string(days) + "\n";
+  str += "\t Preferencias: ";
+  str += (preferences == DISTANCE) ? "distancia\n" : "puntuacion\n";
+  str += "\t Tiempo de ruta: " + to_string((time / 60)) + " horas \n";
+  str += "\t Recorrido: ";
+  str += (circular == CIRCULAR) ? "circular\n" : "lineal\n";
+  return str;
 }
