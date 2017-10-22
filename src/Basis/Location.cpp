@@ -47,3 +47,6 @@ const int Location::getDuration() {
   return locationDuration;
 }
 
+const int Location::getId() {
+  return locationId;
+}

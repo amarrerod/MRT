@@ -1,5 +1,9 @@
 
+#ifndef MRT_METAHEURISTIC_HPP
+#define MRT_METAHEURISTIC_HPP
+#include "Metaheuristic.hpp"
 #include <string>
+#include <set>
 #include "../Basis/Route.hpp"
 #include "../Basis/Map.hpp"
 
@@ -10,22 +14,22 @@ class Metaheuristic {
   Metaheuristic(const string name);
   virtual ~Metaheuristic();
  public:
-  virtual void run() = 0;
+  virtual void run() = 0; // Obtenemos una ruta para cada dia de estancia
   virtual void initParams() = 0;
   string toString();
   virtual void printResults();
- private:
-  void generateRandomSolution();
+ protected:
   void restartChecks(); // Tras completar una ruta reiniciamos los vectores auxiliares
-  void evaluateRoute(Route& route);
- private:
+  bool feasibleRoute(Route &route);
+  int evaluate(Route& route);
+ protected:
+  void generateRandomSolution(const int);
+ protected:
   string name;
   vector<Route> solutions;
- private:
   // Vectores para almacenar los ID de las localizaciones comprobadas
-  vector<int> checked;
-  vector<int> unchecked;
-
- private:
-  static const int NOT_VALID;
+  set<int> visited;
+  set<int> nonVisited;
 };
+
+#endif //MRT_METAHEURISTIC_HPP

@@ -4,10 +4,11 @@
 #include "Handlers/Loader.hpp"
 #include "Basis/Map.hpp"
 #include "Algorithms/SimulatedAnnealing.hpp"
+#include "Algorithms/Greedy.hpp"
 
 using namespace std;
 const int NUM_PARAMS = 4;
-#define DEBUG
+//#define DEBUG
 
 int main(int argc, char **argv) {
   /**
@@ -33,8 +34,9 @@ int main(int argc, char **argv) {
     vector<int> distanceMatrix = loadDistances(distances);
     vector<Location> locationsVector = loadLocations(locations);
     loadTourist(touristStr);
-    Map::setParams(distanceMatrix.size(), locationsVector, distanceMatrix);
-    SimulatedAnnealing simulatedAnnealing;
+    Map::setParams(locationsVector.size(), locationsVector, distanceMatrix);
+    SimulatedAnnealing simulatedAnnealing(250, 0.9, 20);
+    simulatedAnnealing.run();
     simulatedAnnealing.printResults();
   }
 }

@@ -3,10 +3,15 @@
 //
 
 #include "Map.hpp"
+#include <algorithm>
 
 int Map::numberOfLocations = 0;
 vector<Location> Map::locations;
 vector<int> Map::distances;
+
+bool compareRatio(Location &a, Location &b) {
+  return ((a.getDuration() / a.getStars()) > (b.getDuration() / b.getStars()));
+}
 
 void Map::setParams(const int num, vector<Location> &locationsAux, vector<int> &distancesAux) {
   numberOfLocations = num;
@@ -27,10 +32,20 @@ void Map::setLocations(vector<Location> &locationsaux) {
 }
 
 int Map::getDistanceFromTo(const int start, const int end) {
-  return computeGetDistance(start, end, numberOfLocations);
+  return distances[computeGetDistance(start, end, numberOfLocations)];
 }
 
-int Map::computeGetDistance(const int start, const int end, const int size) {
-  // TODO CALCULAR LA DISTANCIA
-  return -1;
+int Map::computeGetDistance(const int i, const int j, const int size) {
+ if(i <= j)
+   return i * size - (i - 1) * i / 2 + j - i;
+ else
+   return j * size - (j - 1) * j / 2 + i - j;
 }
+
+/**
+ * @brief Ordenamos las localizaciones por el ratio DURACION/ESTRELLAS
+ */
+void Map::sortByRatio() {
+  sort(locations.begin(), locations.end(), compareRatio);
+}
+

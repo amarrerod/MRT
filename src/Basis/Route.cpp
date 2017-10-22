@@ -5,15 +5,16 @@
 #include "Route.hpp"
 #include <iostream>
 #include "Map.hpp"
+#include <iomanip>
 
 using namespace std;
 
 string Route::toString() {
-  string resultStr = "";
+  string resultStr = " ";
   for (int i = 0; i < route.size(); ++i) {
-    resultStr += route[i] + " ";
+    resultStr += to_string(route[i]) + "-";
   }
-  resultStr += "| " + to_string(rate) + "\n";
+  resultStr += " | " + to_string(rate) + "  |  " + to_string(duration) + "\n";
   return resultStr;
 }
 
@@ -24,9 +25,17 @@ Route::Route(int locations) : rate(0.0), duration(0), locationsInRoute(0) {
   route.resize(locations);
 }
 
+Route::Route(const Route &copy) {
+  duration = copy.duration;
+  rate = copy.rate;
+  locationsInRoute = 0;
+  locationsInRoute = copy.locationsInRoute;
+  route = copy.route;
+}
+
 Route::~Route() {}
 
-int Route::getLocationInRoute(const int point) {
+int Route::getLocationInRoute(const int point) const {
   if (!route.empty())
     return route[point];
   else {
@@ -35,13 +44,27 @@ int Route::getLocationInRoute(const int point) {
   }
 }
 
-void Route::setPointInRoute(const int point) {
-  route.push_back(point);
+/**
+ * @brief Incluimos una localizacion en la ruta
+ * @param point
+ * @param d
+ */
+void Route::addPointToRoute(const int point, const int d, bool rated) {
+  route.push_back(Map::getLocation(point).getId());
   locationsInRoute++;
-  rate += Map::getLocation(point).getStars();
+  if (rated)
+    rate += Map::getLocation(point).getStars();
+  duration += d;
 }
 
-vector<int> Route::getRoute() {
+void Route::setPointInRouteById(const int id, const int d) {
+  route.push_back(id);
+  locationsInRoute++;
+  // TODO
+  duration += d;
+}
+
+vector<int> Route::getRoute() const {
   return route;
 }
 
@@ -49,12 +72,16 @@ void Route::setDuration(const int d) {
   duration = d;
 }
 
-int Route::getDuration() {
+int Route::getDuration() const {
   return duration;
 }
 
-int Route::getNumberOfLocations() {
+int Route::getNumberOfLocations() const {
   return locationsInRoute;
+}
+
+double Route::getRate() const {
+  return rate;
 }
 
 void Route::setRate(const double r) {

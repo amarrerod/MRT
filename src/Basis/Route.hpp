@@ -12,6 +12,7 @@ class Route {
  public:
   Route();
   Route(int locations);
+  Route(const Route &copy);
   virtual ~Route();
  private:
   vector<int> route;
@@ -19,14 +20,18 @@ class Route {
   int duration;
   int locationsInRoute;
  public:
-  vector<int> getRoute();
-  int getLocationInRoute(const int point);
-  int getNumberOfLocations();
-  double getRate();
-  int getDuration();
-  void setPointInRoute(const int point);
+  vector<int> getRoute() const;
+  int getLocationInRoute(const int point) const;
+  int getNumberOfLocations() const;
+  double getRate() const;
+  int getDuration() const;
+  void addPointToRoute(const int point, const int d, bool rate);
+  void setPointInRouteById(const int id, const int d);
   void setRate(const double r);
   void setDuration(const int);
+ public:
+  void initRoute();
+  void finishRoute();
  public:
   string toString();
 };
