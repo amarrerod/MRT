@@ -6,15 +6,18 @@
 #include <iostream>
 #include "Map.hpp"
 #include <iomanip>
+#include <sstream>
 
 using namespace std;
 
 string Route::toString() {
   string resultStr = " ";
   for (int i = 0; i < route.size(); ++i) {
-    resultStr += to_string(route[i]) + "-";
+    resultStr += to_string(route[i]) + ",";
   }
-  resultStr += " | " + to_string(rate) + "  |  " + to_string(duration) + "\n";
+  stringstream rateStr;
+  rateStr << fixed << setprecision(1) << rate;
+  resultStr += " Stars: " + rateStr.str() + " Duration: " + to_string(duration) + "\n";
   return resultStr;
 }
 
