@@ -25,10 +25,13 @@ class Route {
   int getNumberOfLocations() const;
   double getRate() const;
   int getDuration() const;
-  void addPointToRoute(const int point, const int d, bool rate);
-  void setPointInRouteById(const int id, const int d);
+  void addPointViaId(const int id);
+  void addPoint(const int point);
+  void increaseDuration(const int distance);
+  void increaseRate(const double rate);
   void setRate(const double r);
   void setDuration(const int);
+  void setPointInRoute(const int index, const int point);
  public:
   void initRoute();
   void finishRoute();

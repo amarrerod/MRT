@@ -16,7 +16,7 @@ class SimulatedAnnealing : public Metaheuristic {
   virtual void initParams();
   string toString();
  private:
-  void perturbateSolution(Route &initial, Route& child);
+  void perturbateSolution(Route &initial, Route &child);
   int evaluateDifference(Route &initial, Route &child);
  private:
   double initialTemperature;

@@ -19,17 +19,21 @@ class Metaheuristic {
   string toString();
   virtual void printResults();
  protected:
-  void restartChecks(); // Tras completar una ruta reiniciamos los vectores auxiliares
-  bool feasibleRoute(Route &route);
-  int evaluate(Route& route);
+  double evaluate(Route &route);
  protected:
   void generateRandomSolution(const int);
+ public:
+  static int evaluations;
+  static int selectionMode;
  protected:
   string name;
   vector<Route> solutions;
   // Vectores para almacenar los ID de las localizaciones comprobadas
   set<int> visited;
   set<int> nonVisited;
+ public:
+  static const int FACTOR;
+  static const int STARS;
+  static const int PONDERATE;
 };
-
 #endif //MRT_METAHEURISTIC_HPP

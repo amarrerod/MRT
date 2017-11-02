@@ -26,6 +26,8 @@ class Map {
   static int getNumberOfLocations();
   static Location getLocation(const int i);
   static void sortByRatio();
+  static void sortByStars();
+  static void sortByPonderation();
  private:
   static int computeGetDistance(const int start, const int end, const int size);
  public:

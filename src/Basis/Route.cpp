@@ -44,24 +44,22 @@ int Route::getLocationInRoute(const int point) const {
   }
 }
 
-/**
- * @brief Incluimos una localizacion en la ruta
- * @param point
- * @param d
- */
-void Route::addPointToRoute(const int point, const int d, bool rated) {
-  route.push_back(Map::getLocation(point).getId());
-  locationsInRoute++;
-  if (rated)
-    rate += Map::getLocation(point).getStars();
-  duration += d;
-}
-
-void Route::setPointInRouteById(const int id, const int d) {
+void Route::addPointViaId(const int id) {
   route.push_back(id);
   locationsInRoute++;
-  // TODO
-  duration += d;
+}
+
+void Route::addPoint(const int point) {
+  route.push_back(Map::getLocation(point).getId());
+  locationsInRoute++;
+}
+
+void Route::increaseDuration(const int distance) {
+  duration += distance;
+}
+
+void Route::increaseRate(const double r) {
+  rate += r;
 }
 
 vector<int> Route::getRoute() const {
@@ -70,6 +68,10 @@ vector<int> Route::getRoute() const {
 
 void Route::setDuration(const int d) {
   duration = d;
+}
+
+void Route::setPointInRoute(const int index, const int point) {
+  route[index] = point;
 }
 
 int Route::getDuration() const {
