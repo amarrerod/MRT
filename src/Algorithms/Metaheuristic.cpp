@@ -1,7 +1,6 @@
 
 #include "Metaheuristic.hpp"
 #include "../Basis/Tourist.hpp"
-#include "../Utils/RandomNumber.hpp"
 #include <iostream>
 #include <fstream>
 #include <chrono>

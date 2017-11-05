@@ -4,7 +4,6 @@
 #include "Handlers/Loader.hpp"
 #include "Basis/Map.hpp"
 #include "Algorithms/SimulatedAnnealing.hpp"
-#include "Utils/RandomNumber.hpp"
 #include "Algorithms/Greedy.hpp"
 #include "Algorithms/LocalSearch.hpp"
 
@@ -48,9 +47,12 @@ int main(int argc, char **argv) {
     vector<Location> locationsVector = loadLocations(locations);
     loadTourist(touristStr);
     Map::setParams(locationsVector.size(), locationsVector, distanceMatrix);
-    SimulatedAnnealing simulatedAnnealing(250, 0.9, 10);
+  /*  SimulatedAnnealing simulatedAnnealing(250, 0.9, 10);
     simulatedAnnealing.run();
-    simulatedAnnealing.printResults();
+    simulatedAnnealing.printResults();*/
+    Greedy greedy;
+    greedy.run();
+    cout << "solucion greedy: " << greedy.toString();
 
   }
 }

@@ -10,36 +10,39 @@ using namespace std;
 const string Greedy::NAME = "GREEDY";
 
 Greedy::Greedy() :
-    Metaheuristic(NAME) {
-  initialRoute.addPoint(Tourist::start);
-  initialRoute.increaseRate(Map::getLocation(Tourist::start).getStars());
-  initParams();
-}
+    Metaheuristic(NAME) {}
 
 Greedy::~Greedy() {}
 
 void Greedy::initParams() {
-  Map::sortByRatio();
 }
 
 void Greedy::run() {
-  initParams();
-  int index = 0;
-  int wayBackDuration = 0;
-  while (((initialRoute.getDuration() + wayBackDuration) <= Tourist::time)
-      && (index - (Map::getNumberOfLocations() - Location::NUM_HOTELS))) {
-    int pathDuration =
-        Map::getLocation(index).getDuration() + Map::getDistanceFromTo(initialRoute.getRoute().back(), Map::getLocation(index).getId());
-     wayBackDuration = Map::getDistanceFromTo(Map::getLocation(index).getId(), initialRoute.getRoute().front());
-    if (pathDuration + initialRoute.getDuration() + wayBackDuration <= Tourist::time) {
-      initialRoute.addPoint(index);
-      initialRoute.increaseDuration(pathDuration);
-      initialRoute.increaseRate(Map::getLocation(index).getStars());
+  vector<Location> sorted;
+  Map::sortBy(STARS, sorted); // Ordenamos las localizaciones por estrellas
+  initialRoute.addPoint(Tourist::start);
+  initialRoute.increaseDuration(0);
+  initialRoute.increaseRate(Map::getLocation(Tourist::start).getStars());
+  int routeDuration = 0, waybackDuration = 0, index = 0;
+  while ((routeDuration + waybackDuration < Tourist::time) && (index < sorted.size())) {
+    if (sorted[index].getCategory() == Location::HOTEL)
+      index++; // Pasamos al siguiente objeto
+    else {
+      int point = sorted[index].getId();
+      int duration = sorted[index].getDuration();
+      int pathDistance = Map::getDistanceFromTo(initialRoute.getRoute().back(), point);
+      int wayback = Map::getDistanceFromTo(point, initialRoute.getRoute().front());
+      if ((duration + pathDistance + wayback) + routeDuration < Tourist::time) {
+        waybackDuration = wayback;
+        routeDuration += duration + pathDistance;
+        initialRoute.addPoint(point);
+        initialRoute.increaseRate(sorted[index].getStars());
+      }
+      index++;
     }
-    index++;
   }
-  initialRoute.addPointViaId(Tourist::start);
-  initialRoute.increaseDuration(Map::getDistanceFromTo(initialRoute.getRoute().back(), Tourist::start));
+  initialRoute.addPoint(Tourist::start);
+  initialRoute.increaseDuration(waybackDuration + routeDuration);
 }
 
 string Greedy::toString() {

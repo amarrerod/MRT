@@ -50,3 +50,7 @@ const int Location::getDuration() {
 const int Location::getId() {
   return locationId;
 }
+
+const int Location::getCategory() {
+  return category;
+}

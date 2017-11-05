@@ -15,9 +15,10 @@ string Route::toString() {
   for (int i = 0; i < route.size(); ++i) {
     resultStr += to_string(route[i]) + ",";
   }
-  stringstream rateStr;
+  stringstream rateStr, durationStr;
   rateStr << fixed << setprecision(1) << rate;
-  resultStr += " Stars: " + rateStr.str() + " Duration: " + to_string(duration) + "\n";
+  durationStr << fixed << setprecision(2) << (rate / 60);
+  resultStr += " Stars: " + rateStr.str() + " Duration: " + durationStr.str() + " hours\n";
   return resultStr;
 }
 

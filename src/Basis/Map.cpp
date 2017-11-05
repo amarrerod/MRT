@@ -9,6 +9,10 @@ int Map::numberOfLocations = 0;
 vector<Location> Map::locations;
 vector<int> Map::distances;
 
+const int Map::RATIO = 0;
+const int Map::STARS = 1;
+const int Map::PONDERATION = 2;
+
 /**
  * @brief Comparamos los lugares por el ratio Duracion/Estrellas de cada lugar
  * @param a
@@ -73,14 +77,19 @@ int Map::computeGetDistance(const int i, const int j, const int size) {
 /**
  * @brief Ordenamos las localizaciones por diferentes factores
  */
-void Map::sortByRatio() {
-  sort(locations.begin(), locations.end(), compareRatio);
+void Map::sortBy(const int type, vector<Location> &sorted) {
+  sorted = locations;
+  if (type != RATIO && type != PONDERATION && type != STARS)
+    return;
+  else {
+    switch (type) {
+      case RATIO: sort(sorted.begin(), sorted.end(), compareRatio);
+        break;
+      case PONDERATION: sort(sorted.begin(), sorted.end(), comparePonderation);
+        break;
+      case STARS: sort(sorted.begin(), sorted.end(), compareStars);
+      default: break;
+    }
+  }
 }
 
-void Map::sortByStars() {
-  sort(locations.begin(), locations.end(), compareStars);
-}
-
-void Map::sortByPonderation() {
-  sort(locations.begin(), locations.end(), comparePonderation);
-}

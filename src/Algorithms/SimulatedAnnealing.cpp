@@ -4,7 +4,6 @@
 
 #include "SimulatedAnnealing.hpp"
 #include "../Basis/Tourist.hpp"
-#include <cmath>
 #include <iostream>
 
 #define DEBUG

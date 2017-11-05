@@ -12,12 +12,11 @@ class Map {
  public:
   Map() {};
   static void setParams(const int num, vector<Location> &locations, vector<int> &distances);
-
   virtual ~Map() {};
  private:
   static int numberOfLocations;
-  static vector<Location> locations;
   static vector<int> distances;
+  static vector<Location> locations;
  public:
   static void setLocations(vector<Location> &locations);
   static vector<vector<int>> &getDistances();
@@ -25,12 +24,14 @@ class Map {
   static int getDistanceFromTo(const int start, const int end);
   static int getNumberOfLocations();
   static Location getLocation(const int i);
-  static void sortByRatio();
-  static void sortByStars();
-  static void sortByPonderation();
+  static void sortBy(const int type, vector<Location>& sorted);
  private:
   static int computeGetDistance(const int start, const int end, const int size);
  public:
   static string &toString();
+ public:
+  static const int RATIO;
+  static const int STARS;
+  static const int PONDERATION;
 };
 #endif //MRT_MAP_HPP

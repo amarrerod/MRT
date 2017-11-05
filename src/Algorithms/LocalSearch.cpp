@@ -6,7 +6,6 @@
 #include "LocalSearch.hpp"
 #include "Greedy.hpp"
 #include "../Basis/Tourist.hpp"
-#include "../Utils/RandomNumber.hpp"
 
 const string LocalSearch::NAME = "LocalSearch";
 
