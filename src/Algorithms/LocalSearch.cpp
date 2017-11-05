@@ -66,19 +66,20 @@ void LocalSearch::swap(Route &copy) {
   int pointUnselected = rand() % nonVisited.size();
   int point = swaped.getRoute()[pointInSolution];
   bool feasible = true;
+  // Intercambiamos el punto
   swaped.setPointInRoute(pointInSolution, pointUnselected);
-  swaped.setRate(
-      (swaped.getRate() - Map::getLocation(point).getStars()) + Map::getLocation(pointUnselected).getStars());
-  int routeDistance = 0, wayBack =
-      Map::getDistanceFromTo(swaped.getRoute()[swaped.getNumberOfLocations() - 2], swaped.getRoute().back());
-  for (int i = 0; i < (swaped.getRoute().size() - 2) && feasible; i++) {
+  int routeDistance = 0;
+  for (int i = 0; i < (swaped.getRoute().size() - 1) && feasible; i++) {
     routeDistance += Map::getDistanceFromTo(swaped.getLocationInRoute(i), swaped.getLocationInRoute(i + 1));
-    if (routeDistance + wayBack > Tourist::time)
+    if (routeDistance > Tourist::time)
       feasible = false;
   }
   if (feasible) {
+    nonVisited.insert(point);
+    nonVisited.erase(pointUnselected);
+    visited.insert(pointUnselected);
     copy = swaped;
-    copy.setDuration(routeDistance + wayBack);
+    copy.setDuration(routeDistance);
   }
 }
 

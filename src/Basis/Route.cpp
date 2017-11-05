@@ -17,8 +17,10 @@ string Route::toString() {
   }
   stringstream rateStr, durationStr;
   rateStr << fixed << setprecision(1) << rate;
-  durationStr << fixed << setprecision(2) << (duration * 0.0166666667);
-  resultStr += " Stars: " + rateStr.str() + " Duration: " + durationStr.str() + " hours\n";
+  int minutes = duration % 60;
+  int hours = (duration - minutes) / 60;
+  durationStr << hours << "h " << minutes << "minutes";
+  resultStr += " Stars: " + rateStr.str() + " Duration: " + durationStr.str() + "\n";
   return resultStr;
 }
 
