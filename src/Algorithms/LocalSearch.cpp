@@ -3,6 +3,7 @@
 //
 
 #include <cmath>
+#include <iostream>
 #include "LocalSearch.hpp"
 #include "Greedy.hpp"
 #include "../Basis/Tourist.hpp"
@@ -19,10 +20,6 @@ LocalSearch::~LocalSearch() {
 // NR
 }
 
-void LocalSearch::run() {
-
-}
-
 void LocalSearch::initParams() {
 
 }
@@ -31,11 +28,57 @@ string LocalSearch::toString() {
   return Metaheuristic::toString();
 }
 
+void LocalSearch::run() {
+  Greedy greedy;
+  greedy.run();
+  for (int iRoute = 0; iRoute < Tourist::days; iRoute++) {
+    solutions[iRoute] = greedy.getSolution(iRoute); // Partimos de la solucion obtenida por el greedy
+    bool improve = true;
+    int tries = 0;
+    while (improve) {
+      Route child = solutions[iRoute];
+      swap(child);
+      double evaluation = evaluate(child);
+      child.setRate(evaluation);
+      if (isgreater(evaluation, solutions[iRoute].getRate())) {
+        improve = true;
+        solutions[iRoute] = child;
+      } else {
+        tries++;
+        improve = true; // Permitimos un cierto empeoramiento
+        if (tries >= maxTest) {
+          improve = false;
+        }
+      }
+    }
+  }
+}
+
 /**
  * @brief A partir de la solucion actual, intercambiamos un punto de la ruta por otro punto no seleccionado
  * @param copy
  */
 void LocalSearch::swap(Route &copy) {
-
+  Route swaped(copy);
+  int pointInSolution = 0;
+  while (pointInSolution == 0 || pointInSolution == swaped.getNumberOfLocations() - 1)
+    pointInSolution = rand() % swaped.getNumberOfLocations();
+  int pointUnselected = rand() % nonVisited.size();
+  int point = swaped.getRoute()[pointInSolution];
+  bool feasible = true;
+  swaped.setPointInRoute(pointInSolution, pointUnselected);
+  swaped.setRate(
+      (swaped.getRate() - Map::getLocation(point).getStars()) + Map::getLocation(pointUnselected).getStars());
+  int routeDistance = 0, wayBack =
+      Map::getDistanceFromTo(swaped.getRoute()[swaped.getNumberOfLocations() - 2], swaped.getRoute().back());
+  for (int i = 0; i < (swaped.getRoute().size() - 2) && feasible; i++) {
+    routeDistance += Map::getDistanceFromTo(swaped.getLocationInRoute(i), swaped.getLocationInRoute(i + 1));
+    if (routeDistance + wayBack > Tourist::time)
+      feasible = false;
+  }
+  if (feasible) {
+    copy = swaped;
+    copy.setDuration(routeDistance + wayBack);
+  }
 }
 

@@ -18,6 +18,7 @@ class Metaheuristic {
   virtual void initParams() = 0;
   string toString();
   virtual void printResults();
+  virtual Route getSolution(const int index);
  protected:
   double evaluate(Route &route);
  protected:

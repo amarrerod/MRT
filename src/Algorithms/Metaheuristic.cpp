@@ -54,7 +54,7 @@ void Metaheuristic::generateRandomSolution(const int iRoute) {
   // Mientras podamos incluir más lugares y no hayamos comprobado todos los restantes
   while (routeDuration + wayBackDuration < Tourist::time
       && checked.size() != Map::getNumberOfLocations() - Location::NUM_HOTELS) {
-     int index = rand() % nonVisited.size(); // Cogemos un punto no visitado aún
+    int index = rand() % nonVisited.size(); // Cogemos un punto no visitado aún
     std::set<int>::iterator it = nonVisited.begin();
     std::advance(it, index);
     int point = *it;
@@ -83,7 +83,6 @@ void Metaheuristic::generateRandomSolution(const int iRoute) {
   solutions[iRoute] = randomRoute;
 }
 
-
 /**
  * @brief La funcion de evaluacion es la suma de las estrellas de las localizaciones
  * @param route
@@ -91,14 +90,11 @@ void Metaheuristic::generateRandomSolution(const int iRoute) {
  */
 double Metaheuristic::evaluate(Route &route) {
   double evaluation = 0.0;
-  for (int i : route.getRoute()) {
-    evaluation += Map::getLocation(i).getStars();
+  for (int i = 0; i < route.getNumberOfLocations() - 1; i++) {
+    evaluation += Map::getLocation(route.getLocationInRoute(i)).getStars();
   }
-  // Las estrellas de la primera localizacion estan duplicadas
-  evaluation -= Map::getLocation(route.getRoute().front()).getStars();
   return evaluation;
 }
-
 
 Metaheuristic::Metaheuristic() {
   // Rellenamos el vector de no comprobados con los id desde el ultimo hotel
@@ -124,6 +120,13 @@ Metaheuristic::~Metaheuristic() {}
 
 string Metaheuristic::toString() {
   return "Metaheuristic: " + name + "\n";
+}
+
+Route Metaheuristic::getSolution(const int index) {
+  if(index < 0 || index > solutions.size())
+    return {};
+  else
+    return solutions[index];
 }
 
 

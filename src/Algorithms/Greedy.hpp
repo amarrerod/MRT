@@ -4,6 +4,7 @@
 
 #ifndef MRT_GREEDY_HPP
 #define MRT_GREEDY_HPP
+#include <stack>
 #include "Metaheuristic.hpp"
 
 class Greedy : public Metaheuristic {
@@ -13,8 +14,10 @@ class Greedy : public Metaheuristic {
   virtual void run();
   virtual void initParams();
   string toString();
+ private:
+  void restartSorted();
  public:
-  Route initialRoute;
+  vector<Location> sorted;
  public:
   static const string NAME;
 };

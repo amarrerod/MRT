@@ -21,12 +21,12 @@ int main(int argc, char **argv) {
   if (argc != NUM_PARAMS) {
     cerr << "Error in params" << endl;
     cerr << "Usage: ./MRT tourist.conf location.conf distances.conf <seed> <evaluations> <selection mode>" << endl;
-    exit(-1);
+    return (EXIT_FAILURE);
   } else {
     string touristStr(argv[1]);
     string locations(argv[2]);
     string distances(argv[3]);
-    srand(atoi(argv[3]));
+    srand(static_cast<unsigned int>(atoi(argv[3])));
     int evaluation = atoi(argv[4]);
     int selection = atoi(argv[5]);
     if (selection != Metaheuristic::FACTOR && selection != Metaheuristic::STARS
@@ -47,12 +47,15 @@ int main(int argc, char **argv) {
     vector<Location> locationsVector = loadLocations(locations);
     loadTourist(touristStr);
     Map::setParams(locationsVector.size(), locationsVector, distanceMatrix);
-  /*  SimulatedAnnealing simulatedAnnealing(250, 0.9, 10);
-    simulatedAnnealing.run();
-    simulatedAnnealing.printResults();*/
+    /*  SimulatedAnnealing simulatedAnnealing(250, 0.9, 10);
+      simulatedAnnealing.run();
+      simulatedAnnealing.printResults();*/
+    LocalSearch localSearch(2);
+    localSearch.run();
+    localSearch.printResults();
     Greedy greedy;
     greedy.run();
-    cout << "solucion greedy: " << greedy.toString();
-
+    greedy.printResults();
+    return (EXIT_SUCCESS);
   }
 }
