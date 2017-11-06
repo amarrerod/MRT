@@ -21,6 +21,7 @@ class Metaheuristic {
   virtual Route getSolution(const int index);
  protected:
   double evaluate(Route &route);
+  bool recalculateRoute(Route& route, int& distance);
  protected:
   void generateRandomSolution(const int);
  public:

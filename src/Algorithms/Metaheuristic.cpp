@@ -129,4 +129,16 @@ Route Metaheuristic::getSolution(const int index) {
     return solutions[index];
 }
 
+bool Metaheuristic::recalculateRoute(Route &route, int& distance) {
+  bool feasible = true;
+  distance = 0;
+  for (int i = 0; i < (route.getRoute().size() - 1) && feasible; i++) {
+    distance += Map::getDistanceFromTo(route.getLocationInRoute(i), route.getLocationInRoute(i + 1))
+        + Map::getLocation(route.getLocationInRoute(i)).getDuration();
+    if (distance > Tourist::time)
+      feasible = false;
+  }
+  return feasible;
+}
+
 

@@ -32,6 +32,7 @@ class Route {
   void setRate(const double r);
   void setDuration(const int);
   void setPointInRoute(const int index, const int point);
+  void setRoute(vector<int>& newRoute);
  public:
   void initRoute();
   void finishRoute();

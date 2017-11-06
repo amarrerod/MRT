@@ -95,3 +95,7 @@ double Route::getRate() const {
 void Route::setRate(const double r) {
   rate = r;
 }
+
+void Route::setRoute(vector<int> &newRoute) {
+  route = newRoute;
+}

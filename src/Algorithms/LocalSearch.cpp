@@ -68,17 +68,10 @@ void LocalSearch::swap(Route &copy) {
   std::advance(it, index);
   int pointToInsert = *it;
   int pointToErase = copy.getLocationInRoute(indexInSolution);
-  bool feasible = true;
   // Intercambiamos el punto
   swaped.setPointInRoute(indexInSolution, pointToInsert);
   int routeDistance = 0;
-  for (int i = 0; i < (swaped.getRoute().size() - 1) && feasible; i++) {
-    routeDistance += Map::getDistanceFromTo(swaped.getLocationInRoute(i), swaped.getLocationInRoute(i + 1))
-        + Map::getLocation(swaped.getLocationInRoute(i)).getDuration();
-    if (routeDistance > Tourist::time)
-      feasible = false;
-  }
-  if (feasible) {
+  if (recalculateRoute(swaped, routeDistance)) {
     nonVisited.insert(pointToErase);
     nonVisited.erase(pointToInsert);
     visited.insert(pointToInsert);
@@ -86,16 +79,4 @@ void LocalSearch::swap(Route &copy) {
     copy.setDuration(routeDistance);
   }
 }
-
-/*int duration = sorted[index].getDuration();
-        int pathDistance = Map::getDistanceFromTo(solutions[i].getRoute().back(), point);
-        int wayback = Map::getDistanceFromTo(point, solutions[i].getRoute().front());
-        if ((duration + pathDistance + wayback) + routeDuration < Tourist::time) {
-          waybackDuration = wayback;
-          routeDuration += duration + pathDistance;
-          solutions[i].addPoint(point);
-          solutions[i].increaseRate(sorted[index].getStars());
-          visited.insert(point);
-          nonVisited.erase(point);
- * */
 

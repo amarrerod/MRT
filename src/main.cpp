@@ -6,6 +6,7 @@
 #include "Algorithms/SimulatedAnnealing.hpp"
 #include "Algorithms/Greedy.hpp"
 #include "Algorithms/LocalSearch.hpp"
+#include "Algorithms/VNS.hpp"
 
 using namespace std;
 const int NUM_PARAMS = 7;
@@ -47,15 +48,12 @@ int main(int argc, char **argv) {
     vector<Location> locationsVector = loadLocations(locations);
     loadTourist(touristStr);
     Map::setParams(locationsVector.size(), locationsVector, distanceMatrix);
-    /*  SimulatedAnnealing simulatedAnnealing(250, 0.9, 10);
-      simulatedAnnealing.run();
-      simulatedAnnealing.printResults();*/
     LocalSearch localSearch(2);
     localSearch.run();
     localSearch.printResults();
-    Greedy greedy;
-    greedy.run();
-    greedy.printResults();
+    VNS vns;
+    vns.run();
+    vns.printResults();
     return (EXIT_SUCCESS);
   }
 }
