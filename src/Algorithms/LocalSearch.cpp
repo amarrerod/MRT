@@ -60,26 +60,42 @@ void LocalSearch::run() {
  */
 void LocalSearch::swap(Route &copy) {
   Route swaped(copy);
-  int pointInSolution = 0;
-  while (pointInSolution == 0 || pointInSolution == swaped.getNumberOfLocations() - 1)
-    pointInSolution = rand() % swaped.getNumberOfLocations();
-  int pointUnselected = rand() % nonVisited.size();
-  int point = swaped.getRoute()[pointInSolution];
+  int indexInSolution = 0;
+  while (indexInSolution == 0 || indexInSolution == swaped.getNumberOfLocations() - 1)
+    indexInSolution = rand() % swaped.getNumberOfLocations();
+  int index = rand() % nonVisited.size();
+  std::set<int>::iterator it = nonVisited.begin();
+  std::advance(it, index);
+  int pointToInsert = *it;
+  int pointToErase = copy.getLocationInRoute(indexInSolution);
   bool feasible = true;
   // Intercambiamos el punto
-  swaped.setPointInRoute(pointInSolution, pointUnselected);
+  swaped.setPointInRoute(indexInSolution, pointToInsert);
   int routeDistance = 0;
   for (int i = 0; i < (swaped.getRoute().size() - 1) && feasible; i++) {
-    routeDistance += Map::getDistanceFromTo(swaped.getLocationInRoute(i), swaped.getLocationInRoute(i + 1));
+    routeDistance += Map::getDistanceFromTo(swaped.getLocationInRoute(i), swaped.getLocationInRoute(i + 1))
+        + Map::getLocation(swaped.getLocationInRoute(i)).getDuration();
     if (routeDistance > Tourist::time)
       feasible = false;
   }
   if (feasible) {
-    nonVisited.insert(point);
-    nonVisited.erase(pointUnselected);
-    visited.insert(pointUnselected);
+    nonVisited.insert(pointToErase);
+    nonVisited.erase(pointToInsert);
+    visited.insert(pointToInsert);
     copy = swaped;
     copy.setDuration(routeDistance);
   }
 }
+
+/*int duration = sorted[index].getDuration();
+        int pathDistance = Map::getDistanceFromTo(solutions[i].getRoute().back(), point);
+        int wayback = Map::getDistanceFromTo(point, solutions[i].getRoute().front());
+        if ((duration + pathDistance + wayback) + routeDuration < Tourist::time) {
+          waybackDuration = wayback;
+          routeDuration += duration + pathDistance;
+          solutions[i].addPoint(point);
+          solutions[i].increaseRate(sorted[index].getStars());
+          visited.insert(point);
+          nonVisited.erase(point);
+ * */
 
