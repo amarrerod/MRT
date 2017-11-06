@@ -4,9 +4,9 @@
 #include <iostream>
 #include <fstream>
 #include <chrono>
-#include <ctime>
 #include <numeric>
 #include <algorithm>
+#include "../Utils/Compare.hpp"
 
 using namespace std;
 using namespace std::chrono;
@@ -39,6 +39,10 @@ void Metaheuristic::printResults() {
   }
 }
 
+int Metaheuristic::getOppositePoint(const int point) {
+  return (Location::NUM_HOTELS + Map::getNumberOfLocations() - point);
+}
+
 /**
  * @brief Generamos la ruta iRoute de forma aleatoria para iniciar los algoritmos
  */
@@ -54,9 +58,9 @@ void Metaheuristic::generateRandomSolution(const int iRoute) {
   // Mientras podamos incluir más lugares y no hayamos comprobado todos los restantes
   while (routeDuration + wayBackDuration < Tourist::time
       && checked.size() != Map::getNumberOfLocations() - Location::NUM_HOTELS) {
-    int index = rand() % nonVisited.size(); // Cogemos un punto no visitado aún
+    int firstIndex = rand() % nonVisited.size(); // Cogemos un punto no visitado aún
     std::set<int>::iterator it = nonVisited.begin();
-    std::advance(it, index);
+    std::advance(it, firstIndex);
     int point = *it;
     int duration = Map::getLocation(point).getDuration();
     int pathDistance = Map::getDistanceFromTo(randomRoute.getRoute().back(), point);
@@ -66,6 +70,58 @@ void Metaheuristic::generateRandomSolution(const int iRoute) {
      *          1. Lo incluimos en visitados y lo eliminamos de los no-visitados
      *          2. Realizamos los calculos
      */
+    if ((duration + pathDistance + wayback) + routeDuration < Tourist::time) {
+      visited.insert(point);
+      nonVisited.erase(point);
+      checked.insert(point);
+      wayBackDuration = wayback;
+      routeDuration += duration + pathDistance;
+      randomRoute.addPoint(point);
+      randomRoute.increaseRate(Map::getLocation(point).getStars());
+    } else {
+      checked.insert(point); // Ha sido comprobado pero aún puede ser visitado en otra ruta
+    }
+  }
+  randomRoute.addPoint(Tourist::start);
+  randomRoute.increaseDuration(wayBackDuration + routeDuration);
+  solutions[iRoute] = randomRoute;
+}
+
+/**
+ * @brief Aplicamos la estrategia de OBL para crear una solucion inicial
+ */
+void Metaheuristic::generateRandomSolutionWithOBL(const int iRoute) {
+  Route randomRoute;
+  randomRoute.addPoint(Tourist::start);
+  randomRoute.increaseDuration(0);
+  randomRoute.increaseRate(Map::getLocation(Tourist::start).getStars());
+  int wayBackDuration = 0;
+  int routeDuration = 0;
+  // Puntos comprobados en esta iteracion
+  set<int> checked(visited);
+  // Mientras podamos incluir más lugares y no hayamos comprobado todos los restantes
+  while (routeDuration + wayBackDuration < Tourist::time
+      && checked.size() != Map::getNumberOfLocations() - Location::NUM_HOTELS) {
+    int index = rand() % nonVisited.size(); // Cogemos un punto no visitado aún
+    std::set<int>::iterator it = nonVisited.begin();
+    std::advance(it, index);
+    int point = *it;
+    int secondPoint = getOppositePoint(point);
+    int duration, pathDistance, wayback;
+    if (nonVisited.find(secondPoint) != nonVisited.end()) { // No ha sido visitado
+      Location firstLocation = Map::getLocation(point);
+      Location secondLocation = Map::getLocation(secondPoint);
+      if (comparePonderation(firstLocation, secondLocation)) {
+        duration = firstLocation.getDuration();
+        pathDistance = Map::getDistanceFromTo(randomRoute.getRoute().back(), point);
+        wayback = Map::getDistanceFromTo(point, randomRoute.getRoute().front());
+      } else {
+        duration = secondLocation.getDuration();
+        pathDistance = Map::getDistanceFromTo(randomRoute.getRoute().back(), secondPoint);
+        wayback = Map::getDistanceFromTo(secondPoint, randomRoute.getRoute().front());
+        point = secondPoint; // Para insertarlo en el conjunto de visitados
+      }
+    }
     if ((duration + pathDistance + wayback) + routeDuration < Tourist::time) {
       visited.insert(point);
       nonVisited.erase(point);
@@ -123,13 +179,13 @@ string Metaheuristic::toString() {
 }
 
 Route Metaheuristic::getSolution(const int index) {
-  if(index < 0 || index > solutions.size())
+  if (index < 0 || index > solutions.size())
     return {};
   else
     return solutions[index];
 }
 
-bool Metaheuristic::recalculateRoute(Route &route, int& distance) {
+bool Metaheuristic::recalculateRoute(Route &route, int &distance) {
   bool feasible = true;
   distance = 0;
   for (int i = 0; i < (route.getRoute().size() - 1) && feasible; i++) {
@@ -140,5 +196,7 @@ bool Metaheuristic::recalculateRoute(Route &route, int& distance) {
   }
   return feasible;
 }
+
+
 
 

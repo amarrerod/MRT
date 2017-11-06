@@ -24,6 +24,8 @@ class Metaheuristic {
   bool recalculateRoute(Route& route, int& distance);
  protected:
   void generateRandomSolution(const int);
+  void generateRandomSolutionWithOBL(const int);
+  int getOppositePoint(const int);
  public:
   static int evaluations;
   static int selectionMode;
