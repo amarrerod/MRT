@@ -48,12 +48,15 @@ int main(int argc, char **argv) {
     vector<Location> locationsVector = loadLocations(locations);
     loadTourist(touristStr);
     Map::setParams(locationsVector.size(), locationsVector, distanceMatrix);
-    LocalSearch localSearch(2);
+   /* LocalSearch localSearch(2);
     localSearch.run();
     localSearch.printResults();
     VNS vns;
     vns.run();
-    vns.printResults();
+    vns.printResults();*/
+    SimulatedAnnealing simulatedAnnealing(100, 0.9);
+    simulatedAnnealing.run();
+    simulatedAnnealing.printResults();
     return (EXIT_SUCCESS);
   }
 }

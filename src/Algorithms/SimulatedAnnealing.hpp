@@ -8,7 +8,7 @@
 
 class SimulatedAnnealing : public Metaheuristic {
  public:
-  SimulatedAnnealing(const double initial, const double decre, const int tries);
+  SimulatedAnnealing(const double initial, const double decre);
   SimulatedAnnealing();
   virtual ~SimulatedAnnealing();
  public:
@@ -16,13 +16,12 @@ class SimulatedAnnealing : public Metaheuristic {
   virtual void initParams();
   string toString();
  private:
-  void perturbateSolution(Route &initial, Route &child);
-  int evaluateDifference(Route &initial, Route &child);
+  void perturbateSolution(Route &child);
+  void updateTemperature();
  private:
   double initialTemperature;
   double temperature;
   double decrement;
-  int chances;
  protected:
   static const string NAME;
 };
