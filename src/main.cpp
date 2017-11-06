@@ -54,9 +54,9 @@ int main(int argc, char **argv) {
     VNS vns;
     vns.run();
     vns.printResults();*/
-    SimulatedAnnealing simulatedAnnealing(100, 0.9);
+   /* SimulatedAnnealing simulatedAnnealing(50, 0.9);
     simulatedAnnealing.run();
-    simulatedAnnealing.printResults();
+    simulatedAnnealing.printResults();*/
     return (EXIT_SUCCESS);
   }
 }
