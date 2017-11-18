@@ -8,6 +8,7 @@
 #include "Algorithms/LocalSearch.hpp"
 #include "Algorithms/VNS.hpp"
 #include "Utils/Randomize.hpp"
+#include "Algorithms/TabuSearch.hpp"
 
 using namespace std;
 const int NUM_PARAMS = 7;
@@ -49,15 +50,18 @@ int main(int argc, char **argv) {
     vector<Location> locationsVector = loadLocations(locations);
     loadTourist(touristStr);
     Map::setParams(locationsVector.size(), locationsVector, distanceMatrix);
-      LocalSearch localSearch(2);
-    localSearch.run();
-    localSearch.printResults(true);
-   VNS vns;
-    vns.run();
-    vns.printResults(true);
-  /*  SimulatedAnnealing simulatedAnnealing(50, 0.9);
-    simulatedAnnealing.run();
-    simulatedAnnealing.printResults();*/
+    LocalSearch localSearch(2);
+    /*   localSearch.run();
+       localSearch.printResults(true);
+      VNS vns;
+       vns.run();
+       vns.printResults(true);
+     SimulatedAnnealing simulatedAnnealing(50, 0.9);
+       simulatedAnnealing.run();
+       simulatedAnnealing.printResults();*/
+    TabuSearch tabuSearch(4, 3);
+    tabuSearch.run();
+    tabuSearch.printResults(true);
     return (EXIT_SUCCESS);
   }
 }

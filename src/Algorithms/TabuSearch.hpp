@@ -5,24 +5,24 @@
 #ifndef MRT_TABUSEARCH_HPP
 #define MRT_TABUSEARCH_HPP
 #include "Metaheuristic.hpp"
+#include <queue>
 
 class TabuSearch : public Metaheuristic {
  public:
-  TabuSearch(const int size);
+  TabuSearch(const int size, const int tweaks);
   TabuSearch();
   virtual ~TabuSearch();
   virtual void run();
   virtual void initParams();
   string toString();
- public:
-  void setTabuListSize(const int );
-  int getTabuListSize();
-  vector<int> getTabuList();
-  void setTabuList(vector<int>&);
+ private:
+  void tweak(Route& children);
+  bool inList(const int point);
  public:
   static const string NAME;
  private:
-  vector<int> tabuList;
-  int tabuListSize;
+  queue<int> tabuList;
+  int listSize;
+  int tweaks;
 };
 #endif //MRT_TABUSEARCH_HPP
