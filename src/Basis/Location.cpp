@@ -1,4 +1,6 @@
 
+#include <sstream>
+#include <iomanip>
 #include "Location.hpp"
 
 const int Location::HOTEL = 0;
@@ -33,9 +35,13 @@ Location::Location(int id, string name, int category, double stars, int duration
 string Location::toString() {
   string str = "Localizacion: ";
   str += " Nombre: " + locationName;
-  str += " Categoria: " + to_string(category);
-  str += " Estrellas: " + to_string(locationStars);
-  str += " Duracion: " + to_string((locationDuration / 60)) + "horas \n";
+  str += " Categoria: " + categoryStr(category);
+  stringstream stars, duration;
+  stars << fixed << setprecision(1) << locationStars;
+  int minutes = locationDuration % 60;
+  int hours = (locationDuration - minutes) / 60;
+  duration << hours << " horas " << minutes << " minutos";
+  str += " Estrellas: " + stars.str() + " Duración: " + duration.str() + "\n";
   return str;
 }
 
@@ -53,4 +59,31 @@ const int Location::getId() {
 
 const int Location::getCategory() {
   return category;
+}
+
+string Location::categoryStr(const int i) {
+  string result = "";
+  switch (i) {
+    case HOTEL: result = "HOTEL";
+      break;
+    case BEACH: result = "PLAYA";
+      break;
+    case ZOO: result = "ZOO";
+      break;
+    case SIGHTSEEING: result = "MIRADOR";
+      break;
+    case HIKING: result = "SENDERISMO";
+      break;
+    case AQUATIC: result = "ACUÁTICA";
+      break;
+    case ENTERTAINMENT: result = "ENTRETENIMIENTO";
+      break;
+    case STROLL: result = "PASEO";
+      break;
+    case MUSEUM: result = "MUSEO";
+      break;
+    default: result = "";
+      break;
+  }
+  return result;
 }

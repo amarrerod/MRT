@@ -27,6 +27,7 @@ class Location {
   const int getDuration();
  public:
   string toString();
+  static string categoryStr(const int i);
  public:
   static const int HOTEL;
   static const int BEACH;

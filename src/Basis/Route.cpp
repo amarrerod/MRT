@@ -25,8 +25,8 @@ string Route::toString(bool verbose) {
   rateStr << fixed << setprecision(1) << rate;
   int minutes = duration % 60;
   int hours = (duration - minutes) / 60;
-  durationStr << hours << " hours " << minutes << " minutes";
-  resultStr += "Stars: " + rateStr.str() + " Duration: " + durationStr.str() + "\n --- \n";
+  durationStr << hours << " horas " << minutes << " minutos";
+  resultStr += "Estrellas: " + rateStr.str() + " Duración: " + durationStr.str() + "\n --- \n";
   return resultStr;
 }
 
