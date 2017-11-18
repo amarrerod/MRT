@@ -24,7 +24,6 @@ class Metaheuristic {
   bool recalculateRoute(Route& route, int& distance);
  protected:
   Route generateRandomSolution();
-  Route generateRandomSolutionWithOBL();
   int getOppositePoint(const int);
   void restartSets();
  public:

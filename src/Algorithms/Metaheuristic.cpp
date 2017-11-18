@@ -45,51 +45,12 @@ int Metaheuristic::getOppositePoint(const int point) {
 }
 
 /**
- * @brief Generamos la ruta iRoute de forma aleatoria para iniciar los algoritmos
+ * @brief Generamos la ruta iRoute de forma aleatoria para iniciar los algoritmos aplicando una técnica de OBL
+ * A partir de un punto obtenido aleatoriamente calculamos su punto opuesto
+ * Posteriormente evaluamos cual de los dos puntos es mejor para incluirlo en la solucion
+ *
  */
 Route Metaheuristic::generateRandomSolution() {
-  Route randomRoute;
-  randomRoute.addPoint(Tourist::start);
-  randomRoute.increaseDuration(0);
-  randomRoute.increaseRate(Map::getLocation(Tourist::start).getStars());
-  int wayBackDuration = 0;
-  int routeDuration = 0;
-  // Puntos comprobados en esta iteracion
-  set<int> checked(visited);
-  // Mientras podamos incluir más lugares y no hayamos comprobado todos los restantes
-  while (routeDuration + wayBackDuration < Tourist::time
-      && checked.size() != Map::getNumberOfLocations() - Location::NUM_HOTELS) {
-    int index = getRandomElementBetween(0, nonVisited.size() - 1);
-    std::set<int>::iterator it = nonVisited.begin();
-    std::advance(it, index);
-    int point = *it;
-    int duration = Map::getLocation(point).getDuration();
-    int pathDistance = Map::getDistanceFromTo(randomRoute.getRoute().back(), point);
-    int wayback = Map::getDistanceFromTo(point, randomRoute.getRoute().front());
-    if ((duration + pathDistance + wayback) + routeDuration < Tourist::time) {
-      visited.insert(point);
-      nonVisited.erase(point);
-      checked.insert(point);
-      wayBackDuration = wayback;
-      routeDuration += duration + pathDistance;
-      randomRoute.addPoint(point);
-      randomRoute.increaseRate(Map::getLocation(point).getStars());
-    } else {
-      checked.insert(point); // Ha sido comprobado pero aún puede ser visitado en otra ruta
-      nonVisited.erase(point);
-    }
-  }
-  randomRoute.addPoint(Tourist::start);
-  randomRoute.increaseDuration(wayBackDuration + routeDuration);
-  nonVisited.insert(checked.begin(), checked.end());
-  restartSets();
-  return randomRoute;
-}
-
-/**
- * @brief Aplicamos la estrategia de OBL para crear una solucion inicial
- */
-Route Metaheuristic::generateRandomSolutionWithOBL() {
   // FIXME ME CAGO EN TU PUTA MADRE
   Route randomRoute;
   randomRoute.addPoint(Tourist::start);
