@@ -7,6 +7,7 @@
 #include "Algorithms/Greedy.hpp"
 #include "Algorithms/LocalSearch.hpp"
 #include "Algorithms/VNS.hpp"
+#include "Utils/Randomize.hpp"
 
 using namespace std;
 const int NUM_PARAMS = 7;
@@ -27,7 +28,7 @@ int main(int argc, char **argv) {
     string touristStr(argv[1]);
     string locations(argv[2]);
     string distances(argv[3]);
-    srand(static_cast<unsigned int>(atoi(argv[3])));
+    seed = static_cast<unsigned int>(atoi(argv[3]));
     int evaluation = atoi(argv[4]);
     int selection = atoi(argv[5]);
     if (selection != Metaheuristic::FACTOR && selection != Metaheuristic::STARS
@@ -48,13 +49,13 @@ int main(int argc, char **argv) {
     vector<Location> locationsVector = loadLocations(locations);
     loadTourist(touristStr);
     Map::setParams(locationsVector.size(), locationsVector, distanceMatrix);
-   /* LocalSearch localSearch(2);
+      LocalSearch localSearch(2);
     localSearch.run();
-    localSearch.printResults();
-    VNS vns;
+    localSearch.printResults(true);
+   VNS vns;
     vns.run();
-    vns.printResults();*/
-   /* SimulatedAnnealing simulatedAnnealing(50, 0.9);
+    vns.printResults(true);
+  /*  SimulatedAnnealing simulatedAnnealing(50, 0.9);
     simulatedAnnealing.run();
     simulatedAnnealing.printResults();*/
     return (EXIT_SUCCESS);

@@ -10,17 +10,23 @@
 
 using namespace std;
 
-string Route::toString() {
+string Route::toString(bool verbose) {
   string resultStr = " ";
-  for (int i = 0; i < route.size(); ++i) {
-    resultStr += to_string(route[i]) + ",";
+  if (!verbose) {
+    for (int i = 0; i < route.size(); ++i) {
+      resultStr += to_string(route[i]) + ",";
+    }
+  } else {
+    for (int i = 0; i < route.size(); ++i) {
+      resultStr += Map::getLocation(route[i]).toString();
+    }
   }
   stringstream rateStr, durationStr;
   rateStr << fixed << setprecision(1) << rate;
   int minutes = duration % 60;
   int hours = (duration - minutes) / 60;
   durationStr << hours << " hours " << minutes << " minutes";
-  resultStr += " Stars: " + rateStr.str() + " Duration: " + durationStr.str() + "\n";
+  resultStr += "Stars: " + rateStr.str() + " Duration: " + durationStr.str() + "\n --- \n";
   return resultStr;
 }
 

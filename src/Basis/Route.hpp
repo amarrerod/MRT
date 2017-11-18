@@ -37,6 +37,6 @@ class Route {
   void initRoute();
   void finishRoute();
  public:
-  string toString();
+  string toString(bool verbose);
 };
 #endif //MRT_SOLUTIONS_HPP

@@ -20,7 +20,7 @@ class TabuSearch : public Metaheuristic {
   vector<int> getTabuList();
   void setTabuList(vector<int>&);
  public:
-  const string NAME;
+  static const string NAME;
  private:
   vector<int> tabuList;
   int tabuListSize;

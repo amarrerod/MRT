@@ -17,15 +17,16 @@ class Metaheuristic {
   virtual void run() = 0; // Obtenemos una ruta para cada dia de estancia
   virtual void initParams() = 0;
   string toString();
-  virtual void printResults();
+  virtual void printResults(bool verbose);
   virtual Route getSolution(const int index);
  protected:
   double evaluate(Route &route);
   bool recalculateRoute(Route& route, int& distance);
  protected:
-  void generateRandomSolution(const int);
-  void generateRandomSolutionWithOBL(const int);
+  Route generateRandomSolution();
+  Route generateRandomSolutionWithOBL();
   int getOppositePoint(const int);
+  void restartSets();
  public:
   static int evaluations;
   static int selectionMode;

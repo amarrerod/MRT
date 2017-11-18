@@ -24,9 +24,7 @@ SimulatedAnnealing::SimulatedAnnealing(const double initial, const double decre)
 
 SimulatedAnnealing::~SimulatedAnnealing() {}
 
-void SimulatedAnnealing::initParams() {
-  // TODO
-}
+void SimulatedAnnealing::initParams() {}
 
 /**
  * @brief Ejecutamos el algoritmo para generar la i-ésima ruta
@@ -36,15 +34,15 @@ void SimulatedAnnealing::run() {
   Greedy greedy;
   greedy.run();
   for (int iRoute = 0; iRoute < Tourist::days; ++iRoute) {
-    solutions[iRoute] = greedy.getSolution(iRoute);
+    Route actualSolution = greedy.getSolution(iRoute);
     temperature = initialTemperature;
     while (isgreater(temperature, 1.0)) {
-      Route child = solutions[iRoute];
+      Route child = actualSolution;
       perturbateSolution(child);
       double childEvaluation = evaluate(child);
-      double evaluation = evaluate(solutions[iRoute]);
+      double evaluation = evaluate(actualSolution);
       if (isgreater(childEvaluation, evaluation)) {
-        solutions[iRoute] = child;
+        actualSolution = child;
       } else {
         std::random_device rd;
         mt19937 generation(rd());
@@ -53,11 +51,13 @@ void SimulatedAnnealing::run() {
         double probability = -(childEvaluation - evaluation);
         probability = exp(probability / temperature);
         if (isgreater(randomProbability, probability)) {
-          solutions[iRoute] = child;
+          actualSolution = child;
         }
+
       }
       updateTemperature();
     }
+    solutions[iRoute] = actualSolution;
   }
 }
 
@@ -66,24 +66,26 @@ void SimulatedAnnealing::run() {
  * @return
  */
 void SimulatedAnnealing::perturbateSolution(Route &copy) {
-  Route swaped(copy);
-  int indexInSolution = 0;
-  while (indexInSolution == 0 || indexInSolution == swaped.getNumberOfLocations() - 1)
-    indexInSolution = rand() % swaped.getNumberOfLocations();
-  int index = rand() % nonVisited.size();
-  std::set<int>::iterator it = nonVisited.begin();
-  std::advance(it, index);
-  int pointToInsert = *it;
-  int pointToErase = copy.getLocationInRoute(indexInSolution);
-  // Intercambiamos el punto
-  swaped.setPointInRoute(indexInSolution, pointToInsert);
-  int routeDistance = 0;
-  if (recalculateRoute(swaped, routeDistance)) {
-    nonVisited.insert(pointToErase);
-    nonVisited.erase(pointToInsert);
-    visited.insert(pointToInsert);
-    copy = swaped;
-    copy.setDuration(routeDistance);
+  if (!nonVisited.empty()) {
+    Route swaped(copy);
+    int indexInSolution = 0;
+    while (indexInSolution == 0 || indexInSolution == swaped.getNumberOfLocations() - 1)
+      indexInSolution = rand() % swaped.getNumberOfLocations();
+    int index = rand() % nonVisited.size();
+    std::set<int>::iterator it = nonVisited.begin();
+    std::advance(it, index);
+    int pointToInsert = *it;
+    int pointToErase = copy.getLocationInRoute(indexInSolution);
+    // Intercambiamos el punto
+    swaped.setPointInRoute(indexInSolution, pointToInsert);
+    int routeDistance = 0;
+    if (recalculateRoute(swaped, routeDistance)) {
+      nonVisited.insert(pointToErase);
+      nonVisited.erase(pointToInsert);
+      visited.insert(pointToInsert);
+      copy = swaped;
+      copy.setDuration(routeDistance);
+    }
   }
 }
 
