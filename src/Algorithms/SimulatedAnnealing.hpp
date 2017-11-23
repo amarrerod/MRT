@@ -17,6 +17,7 @@ class SimulatedAnnealing : public Metaheuristic {
   string toString();
  private:
   void perturbateSolution(Route &child);
+  void insert(Route &copy);
   void updateTemperature();
  private:
   double initialTemperature;

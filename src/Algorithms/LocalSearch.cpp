@@ -29,10 +29,10 @@ string LocalSearch::toString() {
 }
 
 void LocalSearch::run() {
-  Greedy greedy;
-  greedy.run();
+  //Greedy greedy;
+  //greedy.run();
   for (int iRoute = 0; iRoute < Tourist::days; iRoute++) {
-    solutions[iRoute] = greedy.getSolution(iRoute); // Partimos de la solucion obtenida por el greedy
+    solutions[iRoute] = generateRandomSolution();//greedy.getSolution(iRoute); // Partimos de la solucion obtenida por el greedy
     bool improve = true;
     int tries = 0;
     while (improve) {

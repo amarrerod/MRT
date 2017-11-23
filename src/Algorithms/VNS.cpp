@@ -19,10 +19,10 @@ VNS::~VNS() {
 }
 
 void VNS::run() {
-  Greedy greedy;
-  greedy.run(); // Obtenemos las soluciones de partida
+  //Greedy greedy;
+  //greedy.run(); // Obtenemos las soluciones de partida
   for (int iRoute = 0; iRoute < Tourist::days; iRoute++) {
-    solutions[iRoute] = greedy.getSolution(iRoute);
+    solutions[iRoute] = generateRandomSolution(); //greedy.getSolution(iRoute);
     Route child = solutions[iRoute];
     int k = 1;
     while (k < MAX_K) {

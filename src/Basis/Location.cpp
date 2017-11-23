@@ -41,7 +41,7 @@ string Location::toString() {
   int minutes = locationDuration % 60;
   int hours = (locationDuration - minutes) / 60;
   duration << hours << " horas " << minutes << " minutos";
-  str += " Estrellas: " + stars.str() + " Duración: " + duration.str() + "\n";
+  str += " Estrellas: " + stars.str() + " Duración: " + duration.str() + " En minutos solo: " + to_string(locationDuration) + "\n";
   return str;
 }
 

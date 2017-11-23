@@ -31,14 +31,14 @@ void SimulatedAnnealing::initParams() {}
  * @param iRoute
  */
 void SimulatedAnnealing::run() {
-  Greedy greedy;
-  greedy.run();
+  // Greedy greedy;
+  //greedy.run();
   for (int iRoute = 0; iRoute < Tourist::days; ++iRoute) {
-    Route actualSolution = greedy.getSolution(iRoute);
+    Route actualSolution = generateRandomSolution(); //greedy.getSolution(iRoute);
     temperature = initialTemperature;
     while (isgreater(temperature, 1.0)) {
       Route child = actualSolution;
-      perturbateSolution(child);
+      insert(child);
       double childEvaluation = evaluate(child);
       double evaluation = evaluate(actualSolution);
       if (isgreater(childEvaluation, evaluation)) {
@@ -66,7 +66,7 @@ void SimulatedAnnealing::run() {
  * @return
  */
 void SimulatedAnnealing::perturbateSolution(Route &copy) {
-  if (!nonVisited.empty()) {
+  if (!nonVisited.empty() && copy.getNumberOfLocations() > 2) {
     Route swaped(copy);
     int indexInSolution = 0;
     while (indexInSolution == 0 || indexInSolution == swaped.getNumberOfLocations() - 1)
@@ -83,12 +83,32 @@ void SimulatedAnnealing::perturbateSolution(Route &copy) {
       nonVisited.insert(pointToErase);
       nonVisited.erase(pointToInsert);
       visited.insert(pointToInsert);
+      visited.erase(pointToErase);
       copy = swaped;
       copy.setDuration(routeDistance);
     }
   }
 }
 
+void SimulatedAnnealing::insert(Route &copy) {
+  Route inserted(copy);
+  int indexToInsert = rand() % nonVisited.size();
+  set<int>::iterator it = nonVisited.begin();
+  advance(it, indexToInsert);
+  int pointToInsert = *it;
+  inserted.setRate(inserted.getRate() + Map::getLocation(pointToInsert).getStars());
+  vector<int> newRoute(copy.getRoute());
+  newRoute.push_back(Tourist::start);
+  newRoute[newRoute.size() - 2] = pointToInsert;
+  inserted.setRoute(newRoute);
+  int routeDistance = 0;
+  if (recalculateRoute(inserted, routeDistance)) {
+    nonVisited.erase(pointToInsert);
+    visited.insert(pointToInsert);
+    copy = inserted;
+    copy.setDuration(routeDistance);
+  }
+}
 void SimulatedAnnealing::updateTemperature() {
   temperature *= decrement;
 }

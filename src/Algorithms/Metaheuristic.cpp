@@ -51,7 +51,6 @@ int Metaheuristic::getOppositePoint(const int point) {
  *
  */
 Route Metaheuristic::generateRandomSolution() {
-  // FIXME ME CAGO EN TU PUTA MADRE
   Route randomRoute;
   randomRoute.addPoint(Tourist::start);
   randomRoute.increaseDuration(0);
@@ -63,7 +62,8 @@ Route Metaheuristic::generateRandomSolution() {
   // Mientras podamos incluir más lugares y no hayamos comprobado todos los restantes
   while (routeDuration + wayBackDuration < Tourist::time
       && checked.size() != Map::getNumberOfLocations() - Location::NUM_HOTELS) {
-    int index = getRandomElementBetween(0, nonVisited.size() - 1);
+    int index = rand() % nonVisited.size() - 1;
+    //int index = getRandomElementBetween(0, nonVisited.size() - 1);
     std::set<int>::iterator it = nonVisited.begin();
     std::advance(it, index);
     int point = *it;

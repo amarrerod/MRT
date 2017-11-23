@@ -29,10 +29,10 @@ string TabuSearch::toString() {
 }
 
 void TabuSearch::run() {
-  Greedy greedy;
-  greedy.run();
+  //Greedy greedy;
+  //greedy.run();
   for (int iRoute = 0; iRoute < Tourist::days; iRoute++) {
-    Route bestFound = greedy.getSolution(iRoute);
+    Route bestFound = generateRandomSolution(); //greedy.getSolution(iRoute);
     Route actualSolution = bestFound;
     tabuList.push(bestFound.getLocationInRoute(bestFound.getRoute().size() - 1));
     bool improve = true;
