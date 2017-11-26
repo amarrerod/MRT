@@ -19,27 +19,19 @@
 %% $URL: http://lenova.river-valley.com/svn/elsbst/trunk/elsarticle-template-1-num.tex $
 %%
 \documentclass[preprint,14pt]{elsarticle}
-
-%% Use the option review to obtain double line spacing
-%% \documentclass[preprint,review,12pt]{elsarticle}
-
-%% Use the options 1p,twocolumn; 3p; 3p,twocolumn; 5p; or 5p,twocolumn
-%% for a journal layout:
-%% \documentclass[final,1p,times]{elsarticle}
-%% \documentclass[final,1p,times,twocolumn]{elsarticle}
-%% \documentclass[final,3p,times]{elsarticle}
-%% \documentclass[final,3p,times,twocolumn]{elsarticle}
-%% \documentclass[final,5p,times]{elsarticle}
-%% \documentclass[final,5p,times,twocolumn]{elsarticle}
-
-%% The graphicx package provides the includegraphics command.
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{multicol}
 \usepackage{graphicx}
 \usepackage[dvips]{epsfig}
 \usepackage[utf8]{inputenc}
-\usepackage[spanish]{babel}
 \usepackage{alltt}
 \usepackage{hyperref}
-
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{graphicx}
+\usepackage{lscape}
 \journal{University of La Laguna}
 
 \begin{document}
@@ -53,8 +45,9 @@
 \address{La Laguna, Tenerife, ES}
 
 \begin{abstract}
-%% Text of abstract
-WRITE SOME USELESS SHIT HERE
+In this document I am going to outline the workflow, solutions and results to the Tourist Trip Route Problem (TTRP) \cite{TTRP1, TTRP2} proposed as a assignmment of the subject Intelligent Systems of the Master of Computing Science of the University of La Laguna.
+Basically, the TTRP is an extension of the common problem Traveling Salesman Problem (TSP) where each point or location has a rating and the goal is to create the better route possible according to that.
+For this work, some metaheuristics as Local Search (LS) \cite{LS}, Simulated Annealing (SA)\cite{SA, SA1, SA2, SA3}, Variable Neighbordhood Search (VNS) \cite{vns} and Tabu Search (TS)\cite{metabook} has been implemented to solve the TTRP \cite{TTRP1, TTRP2}.
 \end{abstract}
 \begin{keyword}
 Computing Science \sep Tourist Trip Route Problem \sep Metaheuristics
@@ -65,17 +58,105 @@ Computing Science \sep Tourist Trip Route Problem \sep Metaheuristics
 \section{Data Collection Process}
 \label{S:data}
 The process of collecting data was pretty rudimentary. Simply, I just select thirty different places in Tenerife from the web \href{https://www.tripadvisor.es/Attractions-g187479-Activities-Tenerife_Canary_Islands.html}{TripAdvisor} and, after that I just calculated the distance between each place with the Google Maps Tool. Due to the fact that this work is only for educational purpose, I assume that the distance between to places A and B where the same, so, the distance from A to B is the same that the distance from B to A. And, with this, I am able to store the distances into a unidimensional array doing the compute process easier.
+Then, here it is shown the list of locations used in this work: \\
 
-\section{Initial Solution Generation}
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}|l|l|l|l|l|@{}}
+\toprule
+ID & Name                                        & Category & Rating & Duration (minutes) \\ \midrule
+0  & Hotel Riu Garoe                             & 0        & 5    & 0                  \\ \midrule
+1  & Iberostar Grand Hotel Salome en Costa Adeje & 0        & 5    & 0                  \\ \midrule
+2  & Finca Buenavista                            & 0        & 5    & 0                  \\ \midrule
+3  & Loro Parque                                 & 2        & 4.5  & 360                \\ \midrule
+4  & Siam Park                                   & 2        & 4.5  & 360                \\ \midrule
+5  & Avistamiento delfines en Las Américas       & 5        & 3    & 90                 \\ \midrule
+6  & Playa de Benijo                             & 1        & 5    & 180                \\ \midrule
+7  & Playa de Las Teresitas                      & 1        & 3    & 180                \\ \midrule
+8  & Playa de San Telmo                          & 1        & 2    & 180                \\ \midrule
+9  & Kite Surf en Adeje                          & 5        & 5    & 120                \\ \midrule
+10 & Seascuba en Santiago del Teide              & 5        & 5    & 60                 \\ \midrule
+11 & Kayaking en Adeje                           & 5        & 4    & 90                 \\ \midrule
+12 & Motos de agua en Las Galletas               & 5        & 4    & 45                 \\ \midrule
+13 & Paseo en Helicoptero en Adeje               & 6        & 4.5  & 30                 \\ \midrule
+14 & Teide                                       & 3        & 5    & 120                \\ \midrule
+15 & Barranco de Masca                           & 4        & 4.5  & 210                \\ \midrule
+16 & Kayaking en Los Gigantes                    & 5        & 3.5  & 120                \\ \midrule
+17 & Rambla de Castro en Los Realejos            & 1        & 2.5  & 240                \\ \midrule
+18 & Reserva de San Blas en San Miguel de Abona  & 7        & 4    & 120                \\ \midrule
+19 & Las Águilas-Jungle Park en Arona            & 2        & 4    & 180                \\ \midrule
+20 & Paseo en Camello en Arona                   & 6        & 3.5  & 60                 \\ \midrule
+21 & Basílica de Nuestra Señora de La Candelaria & 6        & 4.5  & 30                 \\ \midrule
+22 & Jardín Botánico                             & 7        & 3    & 30                 \\ \midrule
+23 & Jardín Victoria                             & 7        & 4.5  & 30                 \\ \midrule
+24 & Lago Martianez                              & 5        & 4.5  & 180                \\ \midrule
+25 & Punta de Teno                               & 3        & 4.5  & 180                \\ \midrule
+26 & Montañas de Anaga                           & 4        & 4.5  & 300                \\ \midrule
+27 & Observatorio del Teide                      & 8        & 4    & 120                \\ \midrule
+28 & Museo de la Naturaleza y el Hombre          & 8        & 4    & 60                 \\ \midrule
+29 & Casa de los Balcones                        & 8        & 4    & 30                 \\ \bottomrule
+\end{tabular}
+\caption{Locations}
+\label{my-label}
+\end{table}
+
+
+And here there is the table of categories reference: \\
+
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}|l|l|@{}}
+\toprule
+ID & Category        \\ \midrule
+0  & Hotel           \\ \midrule
+1  & Playa           \\ \midrule
+2  & Zoo             \\ \midrule
+3  & Mirador         \\ \midrule
+4  & Senderismo      \\ \midrule
+5  & Acuatica        \\ \midrule
+6  & Entretenimiento \\ \midrule
+7  & Paseo           \\ \midrule
+8  & Museo           \\ \bottomrule
+\end{tabular}
+\caption{Categories}
+\label{my-label}
+\end{table}
+
+\section{Trourist Trip Route Problem Design}
+\label{S:VRP}
+As I have said before, due to the fact that this work has only educational purpose, I have considered an lightweight version of the Tourist Trip Route Problem \cite{TTRP1, TTRP2}. Hence, in this implementation I have only considered the following variables:
+\begin{itemize}
+    \item{Number of days}.
+    \item{Amoung of hours avaibles for driving each day}.
+    \item{Circular or lineal routes}.
+    \item{Point of start}.
+\end{itemize}
+
+So, in an effort of getting better results of the performance of the developed algorithms, I decided to set up the following configuration:
+\begin{itemize}
+    \item Number of days = 5 days.
+    \item Hours driving per day = 10-12 hours.
+    \item Circular routes for tourists who lodge in a hotel.
+    \item Point of start = Hotel where the tourist is roomed.
+\end{itemize}
+\break
+\section{Algorithms}
+\label{S:algorithms}
+I this section, I am not going to explain each algorithm I have implemented for this work, but I am going to explain what modifications or neighbordhood structures I have used seeking to increase the performance of these algorithms.
+\subsection{Initial Solution Generation}
 All the implemented algorithms must start from any initial feasible solution, so, for this work I have considered two ways of create that initial solution. \\
 On the one hand, I have developed a Greedy algorithm which creates an initial solution considering only the stars of every place. \\
 On the other hand, a random solution was created considering a weighing equation \label{eq:w} an applying the Opposite-Based Learning technique.
 \label{S:random}
-\subsection{Opposition-Based Learning}
+\subsubsection{Opposition-Based Learning}
 \label{ss:OBL}
-Opposition-based Learning (OBL) \cite{obl, obl2, OPSO, OPSO2} is a computing concept which has demostrated great efectivity at the time of improve several optimization algorithms. When we are evaluating a solution X, which belongs to the set of feasibles solutions S, simultaneously, we calculate the opposite solution $\overline{X}$, in order to achieve a better exploration of the search space $\Omega$ looking for the global optima  \cite{obl}.
+Opposition-based Learning (OBL) \cite{marrero,obl, obl2} is a computing concept which has demostrated great efectivity at the time of improve several optimization algorithms. When we are evaluating a solution X, which belongs to the set of feasibles solutions S, simultaneously, we calculate the opposite solution $\overline{X}$, in order to achieve a better exploration of the search space $\Omega$ looking for the global optima  \cite{obl}.
 
-Being $x \in \Re $ a real number defined within a certain range $x \in [a,b]$. The opposite number of X, denoted as $\overline{x}$ is defined as follows \cite{obl}: \\
+Being $x \in \Re $ a real number defined within a certain range $x \in [a,b]$. The opposite number of X, denoted as $\overline{x}$ is defined as follows \cite{obl,marrero}: \\
 \begin{equation}\label{eq:w}
      \overline{x} = a + b - x  \\
  \end{equation}
@@ -88,14 +169,97 @@ Finally, the place inserted in the initial solution is the one which has better 
     \frac{0.3 * X_{duration} + 0.7 * X_{stars}}{X_{stars}^{2}}    \\
  \end{equation}
 
-\section{Algorithms and Results}
-\label{S:algorithms}
-WRITE SOME USELESS SHIT HERE
+\break
+\subsection{Neighbordhood Structures Used}
 
+The next stage after calculating the initial solution, is trying to improve it using the neighborhood structures, looking for neighbord solutions which have better evaluation. Eventhough there are many possible neighbordhood structures to test, I decided to use the following ones:
+
+\begin{itemize}
+    \item \textbf{Swap}: It tries to swap a random solution-included point for any random non-included point without exceed the route duration limit.
+    \item \textbf{Insert}: It inserts a random non-included solution point in the new solution if it does no exceed the route duration limit.
+    \item \textbf{Remove}: It simply removes any random point from the solution, without being the inital point.
+\end{itemize}
+
+After doing any of these changes, I calculate the evaluation of the new solution and evaluate which one, the new one or the old one, must become the actual solution for the next iteration considering they evaluations.
+
+\section{Results}
+\label{S:results}
+
+For this study, I chose the following \textit{Tourist Trip Route Problem} configuration:
+\begin{itemize}
+    \item 5 days of trip.
+    \item Circular route from the start point. In this case the start point of every route is the Hotel Riu Garoe in Puerto de La Cruz.
+    \item No more than ten hours per route. This was setting like that in order to have more possible solutions for every route.
+\end{itemize}
+
+According to this configuration, I have test all the implemented algorithms with the following configurations:
+
+\begin{itemize}
+    \item \textbf{Local Search (LS)}: the only parameter of this algorithm is the number of chances I give it to choose a worse solution trying to scape for any local optima. In this case, the number of chances were 2.
+    \item \textbf{Variable Neighbordhood Search (VNS)}: This algorithm only have the $k$ parameter, which sets the number of neighbordhood structures. In this case, k was equal to 3.
+    \item \textbf{Simulated Annealing (SA)}: initial temperatura equal to 50 and a decrease rate of $0.9$ in each iteration.
+    \item \textbf{Tabu Search (TS)}: For the Tabu Search algorithm I have only set the number of checked solutions which shape the tabu list. In this case, the size of the tabu list was only 4 solutions due to the low number of possible points.
+\end{itemize}
+
+Finally, every above configuration was testing using the \textit{Greedy Inital Solution} and the \textit{Opposition-Based Learning (OBL) Initial Solution} seeking obtain the better performance possible. Below are the tables with the obtained results, where it is the mean and standard deviation of every experiment considering the duration in minutes and the rating of the calculated routes.
+
+% TABLAS DE RESULTADOS
+\begin{landscape}
+\begin{table}[H]
+\centering
+\resizebox{1.8\textwidth}{!}{%
+\begin{tabular}{lcccccccccccccccc}
+\hline
+ & \multicolumn{8}{c}{\textbf{OBL Initial Solution}} & \multicolumn{8}{c}{\textbf{Greedy Initial Solution}} \\ \hline
+\multicolumn{1}{l|}{} & \multicolumn{2}{c|}{\textit{Local Search}} & \multicolumn{2}{c|}{\textit{VNS}} & \multicolumn{2}{c|}{\textit{SA}} & \multicolumn{2}{c|}{\textit{Tabu Search}} & \multicolumn{2}{c|}{\textit{Local Search}} & \multicolumn{2}{c|}{\textit{VNS}} & \multicolumn{2}{c|}{\textit{SA}} & \multicolumn{2}{c|}{\textit{Tabu Search}} \\ \cline{2-17}
+\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{\mu} & \multicolumn{1}{c|}{\sigma} & \multicolumn{1}{c|}{\mu} & \multicolumn{1}{c|}{\sigma} & \multicolumn{1}{c|}{\mu} & \multicolumn{1}{c|}{\sigma} & \multicolumn{1}{c|}{\mu} & \multicolumn{1}{c|}{\sigma} & \multicolumn{1}{c|}{\mu} & \multicolumn{1}{c|}{\sigma} & \multicolumn{1}{c|}{\mu} & \multicolumn{1}{c|}{\sigma} & \multicolumn{1}{c|}{\mu} & \multicolumn{1}{c|}{\sigma} & \multicolumn{1}{c|}{\mu} & \multicolumn{1}{c|}{\sigma} \\ \cline{2-17}
+\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{503} & \multicolumn{1}{c|}{77,3369252} & \multicolumn{1}{c|}{\textbf{502.6$\uparrow$}} & \multicolumn{1}{c|}{\textbf{55,43735203$\uparrow$}} & \multicolumn{1}{c|}{523} & \multicolumn{1}{c|}{79,11384203} & \multicolumn{1}{c|}{562.2} & \multicolumn{1}{c|}{33,72980878} & \multicolumn{1}{c|}{582} & \multicolumn{1}{c|}{14,24780685} & \multicolumn{1}{c|}{\textbf{472,4 $\uparrow$}} & \multicolumn{1}{c|}{\textbf{157,9898731$\uparrow$}} & \multicolumn{1}{c|}{528.8} & \multicolumn{1}{c|}{112,9522023} & \multicolumn{1}{c|}{582} & \multicolumn{1}{c|}{14,24780685} \\ \hline
+\end{tabular}%
+}
+\caption{Performance results considering routes duration in minutes}
+\label{my-label}
+\end{table}
+\hfill
+\begin{table}[h]
+\centering
+\resizebox{1.8\textwidth}{!}{%
+\begin{tabular}{lcccccccccccccccc}
+\hline
+ & \multicolumn{8}{c}{\textbf{OBL Initial Solution}} & \multicolumn{8}{c}{\textbf{Greedy Initial Solution}} \\ \hline
+\multicolumn{1}{l|}{} & \multicolumn{2}{c|}{\textit{Local Search}} & \multicolumn{2}{c|}{\textit{VNS}} & \multicolumn{2}{c|}{\textit{SA}} & \multicolumn{2}{c|}{\textit{Tabu Search}} & \multicolumn{2}{c|}{\textit{Local Search}} & \multicolumn{2}{c|}{\textit{VNS}} & \multicolumn{2}{c|}{\textit{SA}} & \multicolumn{2}{c|}{\textit{Tabu Search}} \\ \cline{2-17}
+\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{\mu} & \multicolumn{1}{c|}{\sigma} & \multicolumn{1}{c|}{\mu} & \multicolumn{1}{c|}{\sigma} & \multicolumn{1}{c|}{\mu} & \multicolumn{1}{c|}{\sigma} & \multicolumn{1}{c|}{\mu} & \multicolumn{1}{c|}{\sigma} & \multicolumn{1}{c|}{\mu} & \multicolumn{1}{c|}{\sigma} & \multicolumn{1}{c|}{\mu} & \multicolumn{1}{c|}{\sigma} & \multicolumn{1}{c|}{\mu} & \multicolumn{1}{c|}{\sigma} & \multicolumn{1}{c|}{\mu} & \multicolumn{1}{c|}{\sigma} \\ \cline{2-17}
+\multicolumn{1}{l|}{} & \multicolumn{1}{c|}{18} & \multicolumn{1}{c|}{7,474958194} & \multicolumn{1}{c|}{17,6} & \multicolumn{1}{c|}{4,083503398} & \multicolumn{1}{c|}{17} & \multicolumn{1}{c|}{5,744562647} & \multicolumn{1}{c|}{\textbf{18.8 $\uparrow$}} & \multicolumn{1}{c|}{\textbf{3,962322551$\uparrow$}} & \multicolumn{1}{c|}{18,4} & \multicolumn{1}{c|}{7,4615682} & \multicolumn{1}{c|}{\textbf{18,7$\uparrow$}} & \multicolumn{1}{c|}{\textbf{7,233602146$\uparrow$}} & \multicolumn{1}{c|}{18,4} & \multicolumn{1}{c|}{7,4615682} & \multicolumn{1}{c|}{18,4} & \multicolumn{1}{c|}{7,4615682} \\ \hline
+\end{tabular}
+}
+\caption{Performance results considering routes rating}
+\label{my-label}
+\end{table}
+\break
+As we can see, the \textit{Variable Neighbordhood Search} algorithm gets the best results for duration variable with the \textit{Greedy Inital Solution} technique but the \textit{Tabu Search} algorithm gets the best solutions for the rating variable using the \textit{OBL Initial Solution} approach.
+\end{landscape}
+
+Hence, considering the given results and a ratio $\frac{rating}{duration}$, after doing the maths I conclude that the algorithm \textbf{Variable Neighbordhood Search (VNS)} using the \textbf{Greedy} initial solution generation strategy shows the better performance. Here it is shown the results:
+\begin{multicols}{2}
+\centering
+\textbf{Greedy Initial Solution:} \\
+Local Search = 0,03161512\\
+VNS = \textbf{0,039585097 $\uparrow$}\\
+SA = 0,034795764\\
+Tabu Search = 0,03161512\\
+
+\textbf{OBL Initial Solution:}\\
+Local Search = 0,035785288 \\
+VNS = \textbf{0,035017907} \\
+SA = 0,03250478 \\
+Tabu Search = 0,033440057 \\
+\end{multicols}
 \section{Encountered Problems}
 \label{S:problems}
 
-WRITE SOME USELESS SHIT HERE
+Throughout this work I had only have code issues when I was trying to implement an accurate software design to the proposed problem. Finally, I solved it creating two classes, one of them for the distance matrix and the other one for the locations information. \\
+Afterwise, an abstract metaheuristic class was developed in order to avoid repeated code in every algorithm implemented. So, every metaheuristic algorithm inherit from the metaheuristic mother class and implemented it's owm features
+
+\break
 
 \section{Bibliography}
 \addcontentsline{toc}{chapter}{Bibliografía}
